@@ -1,0 +1,219 @@
+
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+
+
+parser code {:
+
+
+public static ArrayList first = new ArrayList();
+public static ArrayList second = new ArrayList();
+public static ArrayList third = new ArrayList();
+public static ArrayList fourth = new ArrayList();
+
+
+
+public void syntax_error(Symbol s){ 
+
+System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+first.add(s.left+1);
+second.add(s.right);
+third.add(s.value);
+fourth.add("sintactico");
+
+
+}
+
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+:}
+
+action code {:
+
+public static ArrayList  varis = new ArrayList();
+public static ArrayList  values = new ArrayList();
+static ListaP pint = new ListaP();
+int pos=0;
+String colores="";
+String pox="";
+String poy="";
+String escen = "";
+String pontos ="";
+
+
+public int position(String var)
+{
+  for(int j =0;j<varis.size();j++)
+  {
+	if(varis.get(j).toString().equals(var))
+	{
+	  return j;
+	}
+  }
+  return 0;
+
+}
+
+public static void vertodo()
+{
+    
+    NodoP  n = pint.primero;
+        while(n!=null)
+        {
+      //System.out.println(n.escenario+":"+n.color+":"+n.posX+":"+n.posY);
+          
+            n=n.sig;
+        }
+}
+
+public static void  pintar ( JLabel[][]  matriz,JComboBox boxi,ArrayList co1,ArrayList co )
+{
+    NodoP n = pint.primero;
+    while(n!=null)
+    {
+        if(n.escenario.equals(boxi.getSelectedItem()))
+        {
+              for(int s=0;s<co1.size();s++)
+              {
+                  
+                 if(n.color.equalsIgnoreCase(co1.get(s).toString()))
+                {
+                      String color = co.get(s).toString();
+//                      
+                  System.out.println(color);
+                    int x = Integer.parseInt(n.posX);
+                   int y = Integer.parseInt(n.posY);
+//                      
+                      pintarMatriz(matriz, x, y, color);
+//                      
+//                      
+//                      
+                  }
+                  
+              }
+               
+        }
+    
+    n=n.sig;
+    }
+    
+    
+
+
+
+}
+
+public static void pintarMatriz(JLabel[][] matriz, int posx , int posy, String colors)
+{
+            
+    
+    
+    
+            for(int i = 0 ; i<matriz.length; i++)
+            {
+                for(int j=0; j<matriz.length;j++)
+                {
+                    if(colors.startsWith("#"))
+                    {
+                        String po = colors.substring(1, colors.length());   
+                        matriz[posx][posy].setBackground(new Color(Integer.parseInt(po, 16)));
+                         matriz[posx][posy].setOpaque(true);
+          
+                    }
+                    else{
+                     String col[]= colors.split(",");
+//             
+                      int red = Integer.parseInt(col[0]);
+                      int blue= Integer.parseInt(col[1]);
+                      int green= Integer.parseInt(col[2]);
+              
+                    matriz[posx][posy].setBackground(new Color(red, green, blue));
+                    matriz[posx][posy].setOpaque(true);
+                    }
+                }
+            }
+
+
+}
+
+
+
+
+
+:}
+
+
+//terminal
+terminal vars,var,color,esce,pintar,setvar;
+terminal  abi,cer,ini,fin,dponto,coma,ponto;
+terminal  pyc,minus,plus;
+terminal Integer numero;
+terminal String ids;
+
+//nonterminal
+nonterminal lenguaje;
+nonterminal Bvar,Bvar2,Bvarr,Bvari; 
+nonterminal B,Bs,Bf,Bd;
+nonterminal Bap,Bapr,Bpnt;
+
+
+start with lenguaje;
+
+
+lenguaje::=  vars{:pos=0; varis.clear();values.clear(); pint.deletes();:} abi Bvari  cer   Bd
+		    |error{::};
+		    
+Bd::= pintar dponto esce:esc{:escen = String.valueOf(esc);:} abi  Bapr  cer;
+
+
+Bapr::= Bapr Bap
+	    |Bap;
+	    
+Bap::= setvar ini ids:p{:pos =position(p);  :} coma  B:n{:values.set(pos, n);:} fin pyc
+	   |pintar{: pontos=""; :} ini color:c{: colores=(String)c;:}  coma Bpnt:x{:pox =  String.valueOf(x); :}  coma Bpnt:y {:poy =  String.valueOf(y); :} fin pyc{: pint.insertar(escen,colores,pox,poy);  :}
+	   |error{: :};
+
+
+
+Bvari::= Bvari Bvar
+	    | Bvar;
+
+Bvar::=  var Bvarr pyc
+	       |setvar ini ids:p{:pos =position(p);  :} coma  B:n{:values.set(pos, n);:}  fin pyc
+	       |error{: :};
+ 
+
+Bvarr::= Bvarr Bvar2	 
+		|Bvar2;
+		
+ 
+ Bvar2::=  ids:v{:varis.add(v); values.add(0);:}
+		|coma
+		|error{: :};
+		
+B::=  numero:n{:RESULT = n;:}	
+	|Bf:op{:RESULT = op; :}
+	|error{: :};
+	
+Bf::=   ini plus  Bs:a Bs:b      fin{:RESULT= Integer.parseInt(a.toString())+Integer.parseInt(b.toString()); :}
+	 | ini minus  Bs:c  Bs:d  fin{:RESULT= Integer.parseInt(c.toString())-Integer.parseInt(d.toString()); :}
+	 ;
+	  
+	 
+
+Bpnt::= Bs:b{: pontos += b+","; :} ponto:p1{: pontos+=p1; :} ponto:p2{: pontos+=p2+",";:} Bs:s{:pontos+=s;  RESULT = pontos;  :}
+	      |Bs:s{: RESULT=s; :}
+	      |Bf:f{:RESULT=f;:}
+	      |error{: :};
+	  
+	 
+	 	 
+	 
+Bs::=  numero:n{:RESULT = n;:}
+	  |ids:v{:int ps = position(v);  RESULT = values.get(ps);  :};
+
+	 

@@ -1,0 +1,82 @@
+Vars<
+var tam, ini, fin;
+setVar(tam, (+ 5 6));
+>
+Pintar:EsCENARio2<
+setVar(fin, 8);
+
+// O negro
+Pintar(color1,ini,4..7);
+pintar(color1,ini,14..15);
+pintar(color1,1,2..3);
+pintar(color1,1,fin);
+pintar(color1,1,13);
+pintar(color1,2,1);
+pintar(color1,2,(+fin 1));
+pintar(color1,2..4,12);
+pintar(color1,3..4,10);
+pintar(color1,3,2);
+pintar(color1,3,6);
+pintar(color1,4..5,5);
+pintar(color1,5..10,tam);
+pintar(color1,4,3);
+pintar(color1,5,2);
+pintar(color1,5,(+tam 2));
+pintar(color1,6,12..14);
+pintar(color1,6,6);
+pintar(color1,6,1);
+pintar(color1,7..8,ini);
+pintar(color1,8,6);
+pintar(color1,8,14);
+pintar(color1,9,12..13);
+pintar(color1,9..10,5);
+pintar(color1,9,1);
+pintar(color1,10,2);
+pintar(color1,10..12,13);
+pintar(color1,tam..12,10);
+pintar(color1,tam,(-fin 2));
+pintar(color1,tam,3);
+pintar(color1,12,2);
+pintar(color1,13,1);
+pintar(color1,13,9);
+pintar(color1,13,14);
+pintar(color1,14,2..3);
+pintar(color1,14,8);
+pintar(color1,14..15,15);
+pintar(color1,(+tam 4),4..7);
+// O verde
+pintar(color2,1..13,15);
+pintar(color2,1..5,14);
+pintar(color2,9..12,14);
+pintar(color2,7,12..14);
+pintar(color2,8,12..13);
+pintar(color2,2..4,13); 
+// O blanco
+pintar(color3,0,0..3);
+pintar(color3,0,8..13);
+pintar(color3,1,0..1);
+pintar(color3,1,9..12);
+pintar(color3,2..6,0);
+pintar(color3,9..15,0);
+pintar(color3,3..5,1);
+pintar(color3,10..12,1);
+pintar(color3,14..15,1);
+pintar(color3,15,2..3);
+pintar(color3,4,2);
+pintar(color3,tam,2);
+pintar(color3,5,12);
+pintar(color3,2..4,tam);
+pintar(color3,2,(- tam 1));
+pintar(color3,15,8..14);
+pintar(color3,14,9..14);
+pintar(color3,13,10..13);
+pintar(color3,10..12,12);
+pintar(color3,11..12,11);
+
+
+
+
+
+Pintar (Color2,0,0);
+Pintar (Color2,15,0);
+>

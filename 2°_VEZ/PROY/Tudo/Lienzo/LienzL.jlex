@@ -1,0 +1,92 @@
+package proy1_compi.Lienzos;
+import java.util.*;
+import java_cup.runtime.*;
+
+%%
+%cup
+%line    
+%char 
+%public
+%ignorecase
+%state comS
+%state comD
+
+kind ="P"|"N"|"G"
+ext ="PNG"|"JPG"|"GIF"
+Esc = "Escenario"{NUMBER}
+hexa = "#"("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|"a"|"b"|"c"|"d"|"e"|"f")*
+
+NUMBER = [0-9][0-9]*
+letras = [a-zA-z]+
+
+%{
+public  ArrayList Linea= new ArrayList();
+public  ArrayList columna= new ArrayList();
+public  ArrayList caracter= new ArrayList();
+pubic  ArrayList kinds= new ArrayList();
+%}
+
+
+%%
+
+<YYINITIAL> "tipo"  { return new Symbol(sym.tipo,yyline,yychar,yytext());}
+<YYINITIAL> "Lienzos" { return new Symbol(sym.lienzo,yyline,yychar,yytext());}
+<YYINITIAL> "nombre" { return new Symbol(sym.nome,yyline,yychar,yytext());}
+<YYINITIAL> "Fondo" { return new Symbol(sym.fondo,yyline,yychar,yytext());}
+<YYINITIAL> "red" { return new Symbol(sym.red,yyline,yychar,yytext());}
+<YYINITIAL> "blue" { return new Symbol(sym.blue,yyline,yychar,yytext());}
+<YYINITIAL> "green" { return new Symbol(sym.green,yyline,yychar,yytext());}
+<YYINITIAL> "tamanho" { return new Symbol(sym.tam,yyline,yychar,yytext());}
+<YYINITIAL> "cuadro" { return new Symbol(sym.cuadro,yyline,yychar,yytext());}
+<YYINITIAL> "dimension" { return new Symbol(sym.dim,yyline,yychar,yytext());}
+
+<YYINITIAL> {ext} { return new Symbol(sym.ext,yyline,yychar,yytext());}
+<YYINITIAL> "imagen" { return new Symbol(sym.ima,yyline,yychar,yytext());}
+<YYINITIAL> {kind} { return new Symbol(sym.kind,yyline,yychar,yytext());}
+<YYINITIAL> {Esc} { return new Symbol(sym.esce,yyline,yychar,yytext());}
+<YYINITIAL> "Hex" { return new Symbol(sym.hex,yyline,yychar,yytext());}
+<YYINITIAL> {hexa} { return new Symbol(sym.hexc,yyline,yychar,yytext());}
+
+
+//Simbolos
+<YYINITIAL> "{" { return new Symbol(sym.abi,yyline,yychar,yytext());}
+<YYINITIAL> "}" { return new Symbol(sym.cer,yyline,yychar,yytext());}
+<YYINITIAL> ":" { return new Symbol(sym.dponto,yyline,yychar,yytext());}
+<YYINITIAL> "," { return new Symbol(sym.coma,yyline,yychar,yytext());}
+<YYINITIAL> "'" { return new Symbol(sym.comi,yyline,yychar,yytext());}
+
+
+<YYINITIAL> {letras} { return new Symbol(sym.letras,yyline,yychar,yytext());}
+<YYINITIAL> {NUMBER} { return new Symbol(sym.numero,yyline,yychar,new Integer(yytext()));}
+
+// comentarios
+
+<YYINITIAL> "//" {yybegin(comS); }
+<comS> [^\n] {}
+<comS> [\n] {yybegin(YYINITIAL); yychar=0;  System.out.println("ComS"); }
+
+
+<YYINITIAL>"/*" {yybegin(comD); }
+<comD>"*"  {}
+<comD> [\n] 	{}
+<comD> [^"/*"]  {}
+<comD> "*/"  {yybegin(YYINITIAL); yychar=0;  System.out.println("ComD"); }
+
+
+
+
+
+
+<YYINITIAL> [\n] 		{yychar=0;}
+<YYINITIAL>  [" "\t\r]+ {}
+
+  
+.
+  { 
+    Linea.add(yyline+1);
+    columna.add(yychar);
+    caracter.add(yytext());
+    kinds.add("Lexico");
+    System.out.println("error lexico en "  + (yyline+1) + "," +( yychar+1) + " No se reconoce " + yytext());
+    yychar=0;
+  }

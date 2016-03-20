@@ -1,0 +1,283 @@
+package practica;
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.swing.JTextPane;
+import java.awt.Color;
+import javax.swing.text.*;
+
+%%   
+
+
+%cup
+%line
+%char
+%ignorecase
+%state COMENTARIO
+%state coment2
+%state caden
+NUMBER = ["-"]?[0-9][0-9]*
+letras = [a-zA-z]+
+
+abi = "<"
+cer= ">"
+real = ["-"]?{NUMBER}{pto}{NUMBER}
+bgn = {abi}{wd1}{cer}
+nd = {abi}{wd2}{cer}
+pto= "."
+wd1="inicio"
+wd2 ="fin"
+n1 = "1"|"2"|"3"
+n2 = "1"|"2"|"3"|"4"|"5"
+ID = [a-zA-Z]([A-Za-z0-9]|["_"])*
+
+%{
+ArrayList list1= new ArrayList();
+ArrayList list2 = new ArrayList();
+ArrayList list3 = new ArrayList();
+ArrayList all = new ArrayList();
+public String nome;
+public JTextPane pane1;
+%}
+
+%{
+
+
+public void painting(String dato , String color)
+{
+
+StyledDocument doc = (StyledDocument)pane1.getDocument();
+Style style = doc.addStyle("StyleName", null);
+
+  if(color.equalsIgnoreCase("verde")){
+    try {
+      StyleConstants.setForeground(style,new java.awt.Color(60,179, 113));
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex) {
+    }    
+  }else if(color.equalsIgnoreCase("azul")){
+    try {
+      StyleConstants.setForeground(style, new java.awt.Color(52,97, 184));
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }else if(color.equalsIgnoreCase("rosa")){
+    try{
+      StyleConstants.setForeground(style, Color.PINK);
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }else if(color.equalsIgnoreCase("naranja")){
+    try {
+      StyleConstants.setForeground(style, new java.awt.Color(243,78,12));
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }  
+  }else if(color.equalsIgnoreCase("amarillo")){
+    try {
+      StyleConstants.setForeground(style, new java.awt.Color(99,52,45) );
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }else if(color.equalsIgnoreCase("cafe")){
+    try {
+      StyleConstants.setForeground(style, new Color(150,75,0));
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }  
+  }else if(color.equalsIgnoreCase("gris")){
+   try {
+      StyleConstants.setForeground(style, Color.darkGray);
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }else if(color.equalsIgnoreCase("rojo")){
+   try {
+      StyleConstants.setForeground(style, Color.RED);
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }else if(color.equalsIgnoreCase("morado")){
+   try {
+      StyleConstants.setForeground(style,new java.awt.Color(138,74, 160));
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }else if(color.equalsIgnoreCase("blanco")){
+   try {
+      StyleConstants.setForeground(style, Color.WHITE);
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }else{
+     try {
+      StyleConstants.setForeground(style, Color.BLACK);
+      doc.insertString(doc.getLength(),dato, style);
+    }catch (Exception ex){
+    }
+  }
+}
+
+
+
+
+public void mistakes()
+{
+String Reporte= "Errores_Archivo.html";
+FileWriter fw = null;
+try {
+fw = new FileWriter(Reporte);
+BufferedWriter bw = new BufferedWriter(fw);
+PrintWriter salArch = new PrintWriter(bw);
+salArch.println();
+
+//aqui empezas a escribir el html
+salArch.print("<html>");
+salArch.print("<body>");
+salArch.print("<br>");
+salArch.print("<br>");
+salArch.print("<h1><align='center'>Errores_Lexicos</align></h1>");
+salArch.print("<p>Nombre Archivo:"+nome+"</p>");
+//definis tu tabla con cada una de las columnas
+salArch.print("<table width='200' border='1'><tr><th scope='col'>Error</th><th scope='col'>Linea</th><th scope='col'>Poscion</th></tr>");
+
+//errores,alinea,posicion  son un arrayList del mismo tamano
+        for (int i = 0; i<list1.size(); i++){
+            salArch.print("<tr><td>"+list3.get(i)+"</td><td>"+list1.get(i)+"</td><td>"+list2.get(i)+"</td></tr>");
+
+
+     }
+salArch.println("</table><p>&nbsp;</p><p>&nbsp;</p></body></html>");
+salArch.close();
+                }
+                catch (IOException ex) {
+}
+
+}
+
+
+
+%}
+
+
+
+%{
+
+public  static int cvar,cint,cstr,cflt,cchr,cprint,cnum,cnd,cbgn,creal,cgra,cop,cid,cmas,cmens,cpor,cdiv,cpa,cpc,cigual,cpyc,ccoma,cdpts,ccad,ccom1,ccom2;
+public  String  ca,co1,co2;
+
+%}
+
+%init{
+
+cvar=0;
+cint=0;
+cstr= 0;
+
+cprint= 0;
+cnum= 0;
+cnd= 0;
+cbgn= 0;
+creal= 0;
+cid= 0;
+
+cmas= 0;
+cmens= 0;
+cpor= 0;
+cdiv= 0;
+cpa= 0;
+cpc= 0;
+cigual= 0;
+
+ccad= 0;
+ccom1= 0;
+ccom2=0;
+cflt=0;
+cchr=0;
+cop=0;
+cgra=0;
+
+ccoma=0;
+cdpts=0;
+cpyc=0;
+ca="";
+co1="";
+co2="";
+
+%init}
+
+
+
+%%
+
+<YYINITIAL> "var" { cvar++; painting(yytext(),"azul"); return new Symbol(sym.var);}
+<YYINITIAL> "integer" { cint++;painting(yytext(),"azul"); return new Symbol(sym.ints);}
+<YYINITIAL> "string" {cstr++; painting(yytext(),"azul");return new Symbol(sym.str);}
+<YYINITIAL> "print" {  cprint++;painting(yytext(),"azul");return new Symbol(sym.prnt);}
+<YYINITIAL> "float" {  cflt++;painting(yytext(),"azul");return new Symbol(sym.flt);}
+<YYINITIAL> "char" {  cchr++;painting(yytext(),"azul");return new Symbol(sym.chr);}
+<YYINITIAL> "operacion" { cop++;painting(yytext(),"azul");return new Symbol(sym.ops);}
+<YYINITIAL> "graficar" {  cgra++;painting(yytext(),"azul");return new Symbol(sym.graph);}
+<YYINITIAL> {ID}    {cid++;painting(yytext(),"rosa");  return new Symbol(sym.id,new String(yytext()));}
+<YYINITIAL> {NUMBER} 	{  cnum++;painting(yytext(),"naranja");return new Symbol(sym.numero,new Float(yytext()));}
+<YYINITIAL> {nd} 	{  cnd++; painting(yytext(),"verde");return new Symbol(sym.end);}
+<YYINITIAL> {bgn} 	{cbgn++; painting(yytext(),"verde");return new Symbol(sym.bgn);}
+<YYINITIAL> {real} 	{  creal++;painting(yytext(),"amarillo");return new Symbol(sym.real,new Float(yytext()));}
+
+
+<YYINITIAL> "/*" {yybegin(coment2); ccom2++; co2="";co2+=yytext(); }
+<coment2> "*"  {co2+=yytext();}
+<coment2> [\n] 	{co2+=yytext();}
+<coment2> [^"/*"]  {co2+=yytext();}
+<coment2> "*/"  {yybegin(YYINITIAL); yychar=0; co2+=yytext();painting(co2,"gris");return new Symbol(sym.comentario2);}
+
+
+
+
+
+//symbols
+<YYINITIAL> "+" { cmas++;painting(yytext(),"morado");return new Symbol(sym.mas); }
+<YYINITIAL> "-" { cmens++;painting(yytext(),"morado");return new Symbol(sym.menos); }
+<YYINITIAL> "*" { cpor++;painting(yytext(),"morado");return new Symbol(sym.por);}
+<YYINITIAL> "/" { cdiv++;painting(yytext(),"morado");return new Symbol(sym.div); }
+<YYINITIAL> "(" {cpa++;painting(yytext(),"morado");return new Symbol(sym.paA); }
+<YYINITIAL> ")" { cpc++;painting(yytext(),"morado");return new Symbol(sym.paC); }
+<YYINITIAL> "=" { cigual++;painting(yytext(),"morado");return new Symbol(sym.igual); }
+<YYINITIAL> ";" { cpyc++;painting(yytext(),"morado");return new Symbol(sym.pyc);}
+<YYINITIAL> ":" { cdpts++;painting(yytext(),"morado");return new Symbol(sym.dpontos,new String(yytext())); }
+<YYINITIAL> "," { ccoma++;painting(yytext(),"morado");return new Symbol(sym.coma); }
+
+
+<YYINITIAL> "'"|"\"" {yybegin(caden); ccad++; ca=""; ca+=yytext();}
+<caden> {letras} { ca+=yytext();}
+<caden> {NUMBER} { ca+=yytext();}
+<caden> [" "\t\r] {  ca+=yytext();}
+<caden> "'"|"\"" {yybegin(YYINITIAL); yychar=0; ca+=yytext();painting(ca,"cafe"); return new Symbol(sym.cads,new String(ca));}
+
+
+<YYINITIAL> "//" {yybegin(COMENTARIO); ccom1++;co1="";co1+=yytext();}
+<COMENTARIO> [^\n] {co1+=yytext();}
+<COMENTARIO> [\n] {yybegin(YYINITIAL); yychar=0;co1+=yytext();painting(co1,"gris"); return new Symbol(sym.comentario1);}
+
+
+<YYINITIAL> {letras} {return new Symbol(sym.letra);}
+<YYINITIAL> [\n] 		{yychar=0;painting(yytext(),"blanco");}
+<YYINITIAL>  [" "\t\r]+ {painting(yytext(),"blanco");}
+  .
+  { 
+  
+   list1.add(yyline+1);
+    list2.add(yychar);
+    list3.add(yytext());
+     System.out.println("error lexico en "  + (yyline+1) + "," + (yychar+1) + " No se reconoce " + yytext());
+    painting(yytext(),"rojo");
+    mistakes();
+    yychar=0;
+  }
+
+ 
+  
+  

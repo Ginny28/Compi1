@@ -1,0 +1,186 @@
+package practica;
+import java_cup.runtime.*;
+import java.lang.String;
+import java.util.ArrayList;
+
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+
+new parser(new Yylex(System.in)).parse();
+}
+
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " +s.value  ); 
+}
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+
+
+:}
+
+
+action code
+{:
+
+  public static ArrayList vari =  new ArrayList();
+  public static ArrayList dto =  new ArrayList();
+  public static ArrayList prnts =  new ArrayList();
+  public static ArrayList graphs =  new ArrayList();
+  
+  
+ public static String valueF(String variable)
+{
+    for (int i = 0; i<vari.size(); i++) 
+    {
+        if(variable.equalsIgnoreCase(vari.get(i).toString()))
+        {
+            String f = dto.get(i).toString();
+            return f;
+        }
+    }
+        return null;
+
+}
+  
+public static Integer indx(String var)
+ {
+ 
+  for (int i = 0; i<vari.size(); i++) 
+    {
+        if(var.equalsIgnoreCase(vari.get(i).toString()))
+        {
+	    
+            int f = vari.indexOf(var);
+            return f;
+        }
+    }
+        return 0;
+ 
+ }
+  
+  int h;
+  public static String func=" ";
+  
+  
+:}
+  
+terminal var, ops,graph;
+terminal  bgn, end,prnt,pyc,dpontos,coma;
+terminal ints,str,flt,chr,letra;
+terminal mas,menos ,por, div, paA,paC,igual,comentario1,comentario2;
+terminal String cads,id;
+terminal Float numero,real;
+
+nonterminal lenguaje, B,Br,Gvar1, Bdts,Bo,boa,Bp,Bdp,Bex,Bdg,Bdgr;
+
+nonterminal Float S,R,M,D,P;
+
+
+precedence left mas;
+precedence left menos;
+precedence left por;
+precedence left div;
+
+
+start with lenguaje;
+
+lenguaje::= bgn B end ;
+
+B::= B Br
+    |Br
+    |error{::};
+    
+    
+Br::= Gvar1
+	|comentario1
+	|comentario2
+	|id:t{:h=0; h = indx(t); :} igual Bdts:ro{:dto.set(h, ro);:} pyc
+	|graph paA numero:n{:func+=n+","; :} coma numero:ns{:func+=ns+","; :}  coma Bdgr:p{:graphs.add("graficar("+func+")"); :} paC{:func=""; :} pyc
+	|boa
+	|Bp
+	;
+	
+Bdgr::= Bdgr Bdg		
+	     |Bdg
+	     ;
+	
+	
+Bdg::=id:no{: String so = valueF(no);   func+=so;:}
+	  |dpontos:no{:func+=no;:}
+	  |numero:no{:func+=no;:}
+	  ;
+	
+	
+Bdts::= numero:no{:RESULT=no;:}
+	  |real:re{:RESULT=re;:}
+	  |cads:kd{:RESULT=kd;:}
+	  ;
+
+Gvar1::=var ints id:v{:vari.add(v);:} igual numero:n{:dto.add(n);:} pyc
+	    | var ints id:v{:vari.add(v); dto.add(0);:} pyc
+	    |var flt id:v{:vari.add(v);:} igual real:rn{:dto.add(rn);:} pyc
+	    |var flt id:v{:vari.add(v);dto.add(0.0);:} pyc
+	    |var str id:v{:vari.add(v);:} igual cads:ca{:dto.add(ca);:} pyc
+	    |var str id:v{:vari.add(v);dto.add("");:}  pyc
+	    |var chr id:v{:vari.add(v);:} igual cads:ca{:dto.add(ca);:} pyc
+	    |var chr id:v{:vari.add(v);dto.add("");:} pyc
+	    ;
+	    
+	
+boa::= ops paA Bo paC pyc;
+	  
+Bo::= Bo Bex
+      |Bex
+      |error 
+      ;	
+	
+	
+
+//operaciones
+
+	    
+	    
+ Bex::= S:p {:prnts.add("operacion --> "+p); :};
+
+
+S::= S:l mas R:m {: RESULT=new Float(l.intValue() + m.intValue()); :}
+	  | R:q {: RESULT=q; :}
+	  ;
+	  
+R::= R:v menos M:n {: RESULT=new Float(v.intValue() - n.intValue()); :}
+	  | M:z {: RESULT=z; :}
+	  ;
+      
+M::= M:l por D:r {: RESULT=new Float(l.intValue() * r.intValue()); :}
+	  | D:e {: RESULT=e; :}
+	  ;
+
+D::= D:l div P:r {: RESULT=new Float(l.intValue() / r.intValue()); :}
+	  | P:e {: RESULT=e; :}
+	  ;
+
+P ::= paA S:e paC {: RESULT=e; :}
+	  |numero:n {: RESULT=n; :}
+	  |id:p{:String r = valueF(p);float z = Float.parseFloat(r); RESULT=z;   :}
+	  ;
+	    
+// println
+
+
+Bp::= prnt Bdp:ps{:prnts.add("print--> "+ps);:} pyc
+	 ;
+
+Bdp::=cads:m{: RESULT=m;:}
+	  |id:p{:String r = valueF(p); RESULT=r; :}
+	  |error 
+	  ;
+
+

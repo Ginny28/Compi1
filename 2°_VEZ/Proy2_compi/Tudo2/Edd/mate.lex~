@@ -1,0 +1,109 @@
+import java.lang.System;
+
+class Analex {
+      public static void main(String argv[])
+	throws java.io.IOException {
+	Yylex yy = new Yylex(System.in);
+	while (yy.yylex() != null) {}	
+    }
+}
+
+class Yytoken {
+  Yytoken () {}
+}
+ 
+%%
+
+%eofval{
+  { System.exit(0); }
+%eofval}
+
+%line    
+%char  
+%ignorecase
+LETRAS = [a-zA-z]+
+NUMBER = [1-9][0-9]*
+REAL = {NUMBER}"."{NUMBER}
+id = [a-zA-Z]([a-zA-Z]|[0-9]|_)*
+
+%state comS
+%state comD
+
+
+%%
+
+// o Reservado 
+
+<YYINITIAL> "Declarar" 		{ System.out.println ("dec");}
+<YYINITIAL> "Fin Declarar" 		{ System.out.println ("fdec ");}
+<YYINITIAL> "Incluir" 		{ System.out.println ("inc ");}
+<YYINITIAL> "Si" 		{ System.out.println ("if ");}
+<YYINITIAL> "sino" 		{ System.out.println ("else ");}
+<YYINITIAL> "Fin si" 		{ System.out.println ("end if ");}
+<YYINITIAL> "para" 		{ System.out.println ("for ");}
+<YYINITIAL> "Fin para" 		{ System.out.println ("end for ");}
+<YYINITIAL> "Mientras" 		{ System.out.println ("while ");}
+<YYINITIAL> "Fin Mientras" 	{ System.out.println ("end while");}
+<YYINITIAL> "Funciones" 		{ System.out.println (" ");}
+<YYINITIAL> "Fin funciones" 		{ System.out.println (" ");}
+<YYINITIAL> "Definir" 		{ System.out.println (" ");}
+<YYINITIAL> "Fin definir" 		{ System.out.println (" ");}
+
+
+//operadores 
+<YYINITIAL> ">" 		{ System.out.println ("maior ");}
+<YYINITIAL> ">=" 		{ System.out.println ("maiorI ");}
+<YYINITIAL> "<" 		{ System.out.println ("menor ");}
+<YYINITIAL> "<=" 		{ System.out.println ("menorI ");}
+<YYINITIAL> "==" 		{ System.out.println ("igual ");}
+<YYINITIAL> "<>" 		{ System.out.println ("dife ");}
+
+
+<YYINITIAL> {LETRAS} 	{ System.out.println ("letras ");} 
+
+
+
+
+<YYINITIAL> {NUMBER} 	{ System.out.println ("NUMERO ");} 
+<YYINITIAL> "->" 		{ System.out.println (" ");}
+<YYINITIAL> ":" 		{ System.out.println ("2pts ");}
+<YYINITIAL> ";" 		{ System.out.println ("pyc ");}
+<YYINITIAL> "(" 		{ System.out.println ("abi ");}
+<YYINITIAL> ")" 		{ System.out.println ("cerra ");}
+<YYINITIAL> "." 		{ System.out.println ("ponto");}
+
+
+// operações
+<YYINITIAL> "+" 		{ System.out.println ("mais ");}
+<YYINITIAL> "-" 		{ System.out.println ("menos ");}
+<YYINITIAL> "*" 		{ System.out.println ("mult");}
+<YYINITIAL> "/" 		{ System.out.println ("div ");}
+<YYINITIAL> "%" 		{ System.out.println ("mod ");}
+<YYINITIAL> "^" 		{ System.out.println ("pot ");} 
+ 
+ 
+<YYINITIAL> [\n] 		{yychar=0;}
+<YYINITIAL>  (" "|\r|\t)+	{ }
+
+
+
+//comentarios
+
+<YYINITIAL> "//" {yybegin(comS); }
+<comS> [^\n] {}
+<comS> [\n] {yybegin(YYINITIAL); yychar=0;  System.out.println("ComS"); }
+
+<YYINITIAL>"/*" {yybegin(comD); }
+<comD>"*"  {}
+<comD> [\n] 	{}
+<comD> [^"/*"]  {}
+<comD> "*/"  {yybegin(YYINITIAL); yychar=0;  System.out.println("ComD"); }
+
+
+
+
+.
+  { 
+    System.out.println("error lexico en "  + yyline + "," + yychar + " No se reconoce " + yytext());
+    yychar=0;
+  }

@@ -1,0 +1,32 @@
+{LienZOs:{
+EscenARio1:{
+ NombrE:'Floresita'
+Tipo:'PNG'
+ Fondo:{
+ Red:175
+ Blue:235
+Green: 212
+ }
+ TamANho:{
+cuadro:30
+dimension:11
+ }
+imagen : P
+},
+EsCENARio2:{
+Imagen: G
+Fondo:{
+HEX:#DF7401
+}
+TamANho:{
+cuadro:20
+ dimeNsion: 16
+}
+NombrE:'Flor_MarioB'
+Tipo:'GIF'
+ }
+
+ }
+
+}
+

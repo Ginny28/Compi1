@@ -1,0 +1,71 @@
+{ Incluir(aritmetica.mate)<
+  Incluir(aritmetica.prn)<
+VarS{
+entero: tam,va2,fin<
+cadena: ho2<
+setVar(tam,6)<
+setVar(ho2, "oi mundo")<
+/*Creacion de estructuras*/
+Pila<cadena>: p1,p2< //Una pila de cadenas
+Cola<entero>: c1,c2< //Una pila de enteros
+Arreglo<decimal>: Arr[5], Arr2[2][2]<
+
+p1.insertar("oi pessoal")<
+setVar(per1->nombre, p1.extraer())<
+
+
+/*Estructura definida por el usuario de nombre “persona”*/
+ESTrucTura:persona{
+Entero: edad<
+Cadena: nombre<
+}
+persona: per1<
+
+/*Arreglo de personas de tam posiciones*/
+Arreglo: prsns[tam]<
+}
+
+FuncIoneS
+{
+  funcion: obtenerEdad(entero indice):entero{
+  retorno prsns[indice].edad<
+  }
+  funcion: obtenerNombre(entero indice):cadena{
+  retorno prsns[indice].nombre<
+  }
+  FuncIOn: insertarPila_nombre(cadena nombre):vacio{
+  p1.insertar(nombre)<
+  }
+  Funcion: insertarPila_edad(entero edad):vacio{
+    /*Utilizar funcion del archivo atitmetica.mate*/
+  p1.insertar(Suma3(edad,sum(edad,2),edad,5))<
+  }
+  fUNCion: cambiar_Pila_Arreglo():vacio
+  {
+  entero: contador<
+  setvar(contador,0)<
+  
+  repetir{
+  setvar(prsns[contador]->nombre,p1.extraer())<
+  setvar(prsns[contador]->edad,p2.extraer())<
+   setvar(prsns[5],p2.extraer())<
+  setvar(contador,sum(contador,1))<
+  } 
+  hasta(p2.vacia()  or p1.vacia())
+  
+  Si(p2.vacia())
+  {
+   retorno  5 <
+  }
+  sino{
+   retorno 1 <
+  }
+  
+  
+  
+  }
+  funcion: obtenerTamArreglo():entero{
+  retorno prsns.tamanho()<
+  }
+}
+}

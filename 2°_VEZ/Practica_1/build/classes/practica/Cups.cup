@@ -1,0 +1,191 @@
+package practica;
+import java_cup.runtime.*;
+import java.lang.String;
+import java.util.ArrayList;
+import java.awt.Color;
+import javax.swing.JTextPane;
+import javax.swing.text.*;
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+
+new parser(new Yylex(System.in)).parse();
+}
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.right+1) +" Columna "+s.left+ ". Identificador " 
++s.value  ); 
+}
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido."); 
+}
+:}
+
+
+action code
+{:
+    int s=0;
+    String vari="";
+    
+  public static ArrayList prnts =  new ArrayList();
+  
+  public static ArrayList varia =  new ArrayList();
+  public static ArrayList values =  new ArrayList();
+  public static ArrayList  graph = new ArrayList();
+  
+public static String valueF(String variable)
+{
+    for (int i = 0; i<varia.size(); i++) 
+    {
+        if(variable.equalsIgnoreCase(varia.get(i).toString()))
+        {
+            String f = values.get(i).toString();
+            return f;
+        }
+    }
+        return null;
+
+}
+
+
+    public static Integer indxof1(String variable)
+{
+    for (int i = 0; i<varia.size(); i++) 
+    {
+        if(variable.equalsIgnoreCase(varia.get(i).toString()))
+        {
+	    
+            int f = varia.indexOf(variable);
+            return f;
+        }
+    }
+        return 0;
+
+}    
+:}
+
+/*Terminales*/
+terminal var,  letra,ops,graph;
+terminal  bgn, end,prnt,pyc,dpontos,coma;
+terminal mas,menos ,por, div, paA,paC,igual,comentario1,comentario2;
+terminal String cads,id,ints, str,flt,chr;
+terminal Float numero,real;
+
+
+
+/*Non terminal*/
+
+nonterminal lenguaje,Bp,Bm,Bo,Br,Bex,boa;
+nonterminal Gvar,B,Gvar1,Bnum,Bdp,Bgad,Ba;
+
+nonterminal Float S,R,M,D,P;
+
+
+precedence left mas;
+precedence left menos;
+precedence left por;
+precedence left div;
+
+
+start with lenguaje;
+
+lenguaje::= Bm;
+
+Bm::= bgn B ;
+
+B::= B Br
+    |Br
+    |error{::};
+
+
+Br::=  Gvar1
+      |boa
+      |Bp
+      |comentario1
+      |comentario2
+      |id:v{: s= indxof1(v);  :} igual Bnum:p{:System.out.println(s+"----"+p); :} pyc
+      |graph paA numero coma numero coma Bgad paC pyc
+      |end
+      ;
+      
+Bgad::= Bgad Ba
+	|Ba
+	;
+	
+Ba::=  id
+          |numero
+          |dpontos
+      ;
+      
+
+Bnum::= numero :n{:RESULT= n;:}
+	       |real:n{:RESULT = n;:}
+	       |cads:ca{:RESULT=ca;:}
+	       |error ;
+      
+      
+
+
+Gvar::= Gvar Gvar1
+	|Gvar1
+	;
+
+	  
+Gvar1::= var ints id:e{:varia.add(e);:} igual numero:n{:values.add(n);:}pyc 
+	 |var flt id:e{:varia.add(e);:} igual real:n{:values.add(n);:}pyc
+	 |var str id:e{:varia.add(e);:} igual real:n{:values.add(n);:}pyc
+	 |var chr id:e{:varia.add(e);:} igual real:n{:values.add(n);:}pyc
+	 |var ints id:e{:varia.add(e);values.add("0");:}pyc
+	 |var flt id:e{:varia.add(e);values.add("0.0");:}pyc
+	 |var str id:e{:varia.add(e);values.add("");:}pyc
+	 |var chr id:e{:varia.add(e);values.add("");:}pyc
+         ;  
+           
+	// operaciones
+	
+boa::= ops paA Bo paC pyc;
+	  
+Bo::= Bo Bex
+      |Bex
+      |error 
+      ;
+
+Bex::= S:p {:prnts.add("operacion -->"+p); :};
+
+
+S::= S:l mas R:m {: RESULT=new Float(l.intValue() + m.intValue()); :}
+	  | R:q {: RESULT=q; :}
+	  ;
+	  
+R::= R:v menos M:n {: RESULT=new Float(v.intValue() - n.intValue()); :}
+	  | M:z {: RESULT=z; :}
+	  ;
+      
+M::= M:l por D:r {: RESULT=new Float(l.intValue() * r.intValue()); :}
+	  | D:e {: RESULT=e; :}
+	  ;
+
+D::= D:l div P:r {: RESULT=new Float(l.intValue() / r.intValue()); :}
+	  | P:e {: RESULT=e; :}
+	  ;
+
+P ::= paA S:e paC {: RESULT=e; :}
+	  |numero:n {: RESULT=n; :}
+	  |id:p{:String r = valueF(p);float z = Float.parseFloat(r); RESULT=z;   :}
+	  ;
+
+Bp::= prnt Bdp pyc
+	 ;
+
+Bdp::=cads:m{: prnts.add("print-->"+m);:}
+	  |id:p{:String r = valueF(p);  prnts.add("print-->"+r);:}
+	  |error 
+
+      ;
+	 

@@ -1,0 +1,197 @@
+package proy1_compi.Colores;
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+public static ArrayList first = new ArrayList();
+public static ArrayList second = new ArrayList();
+public static ArrayList third = new ArrayList();
+public static ArrayList fourth = new ArrayList();
+
+public void syntax_error(Symbol s){ 
+
+System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+first.add(s.left+1);
+second.add(s.right);
+third.add(s.value);
+fourth.add("sintactico");
+
+
+}
+
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+:}
+
+action code {:
+private String vermelho="";
+private String azul="";
+private String verde="";
+private String hex="";
+private String  esce="";
+private String names="";
+private String color1 ="";
+static ListaC  colors = new ListaC();
+static  ArrayList concolor= new ArrayList();
+public static void vertodo(JComboBox boxi)
+{
+    concolor.clear();
+    NodoC  n = colors.primero;
+        while(n!=null)
+        {
+       //     System.out.println(n.escenario+":"+n.nombre+":"+n.hex+":"+n.r);
+            if(n.escenario.equals(boxi.getSelectedItem()))
+            {
+             
+               concolor.add(n.nombre);
+            
+            }
+            n=n.sig;
+        }
+}
+
+public static void crear(JComboBox boxis, JPanel pane2)
+{
+ 
+int x = 25;
+int y = 35;
+
+int xs = 65;
+NodoC n = colors.primero;
+while(n!=null)
+{
+    if(n.escenario.equals(boxis.getSelectedItem()))
+    {
+   
+        for(int p =0;p<concolor.size();p++)
+        {
+            
+           JLabel co = new JLabel();
+           JLabel no = new JLabel(n.nombre);
+          co.setLocation(x, y);
+          no.setLocation(xs, y);
+          if(n.hex=="")
+          {
+          
+              
+           String col[]= n.r.split(",");
+//             
+              int red = Integer.parseInt(col[0]);
+              int blue= Integer.parseInt(col[1]);
+              int green= Integer.parseInt(col[2]);
+              co.setBackground(new java.awt.Color(red, green, blue));
+         
+            //  System.out.print(red+":"+blue+":"+green);
+          }
+          else 
+          {
+               if (n.hex.startsWith("#"))
+            {   
+             String po = n.hex.substring(1, n.hex.length());   
+              co.setBackground(new Color(Integer.parseInt(po, 16)));
+         
+         //    System.out.print(po);
+             }
+             
+          
+          }
+          
+          
+          pane2.add(co);
+          pane2.add(no);
+          co.setSize(30 , 30);
+          co.setOpaque(true);
+          co.setVisible(true);
+          no.setSize(40, 40);
+          no.setVisible(true);
+        }
+         y = y+45;
+    }
+   
+
+n= n.sig;
+}
+x=25;
+y=35;
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+:}
+
+
+
+terminal colores,color,red,blue,green,esce;
+terminal  hex,hexc,abi,cer,dponto,coma;
+terminal numero;
+
+// nonterminal
+nonterminal Be, Besce;
+nonterminal Bae,Bcolos;
+nonterminal Bafr,Baf;
+nonterminal lenguaje;
+
+
+start with lenguaje;
+
+lenguaje::=  abi colores{:colors.deletes();:} dponto abi Be cer cer;
+		   
+
+Be::= Be Besce
+	  |Besce
+	  ;
+	  
+
+Besce::= esce:e{:esce=(String)e;:} dponto abi Bae cer
+	      | coma
+	      |error{::};
+	      
+
+Bae::= Bae Bcolos
+	  |Bcolos;
+
+Bcolos::= color:c{:names=(String)c;hex="";vermelho=""; azul="";verde="";:} dponto abi  Bafr{:color1 =vermelho+azul+verde;  :} cer{:colors.insertar(esce,names,hex,color1); :}
+		|coma
+		|error{::};
+
+
+
+Bafr::= Bafr Baf
+	    |Baf;
+
+	    
+
+Baf::=red dponto numero:r{: vermelho =(String)r+","; :}
+	  |blue dponto numero:b{: azul = (String)b+"," ; :}
+	  |green dponto numero:g{: verde = (String)g; :}
+	  |hex dponto hexc:h {:hex =(String) h;:}
+	  |error{::};
+	  
+	  
+	  
+
+	      
+

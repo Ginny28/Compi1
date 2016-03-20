@@ -1,0 +1,450 @@
+package proy2_compi.prn;
+
+
+import java.io.*;
+import java.util.*;
+import java_cup.runtime.*;
+
+
+
+parser code {:
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+public static ArrayList first = new ArrayList();
+public static ArrayList second = new ArrayList();
+public static ArrayList third = new ArrayList();
+public static ArrayList  four = new ArrayList();
+
+public void syntax_error(Symbol s){ 
+
+System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+first.add(s.left+1);
+second.add(s.right);
+third.add(s.value);
+four.add("Sintactico");
+
+
+}
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+
+:}
+
+action code {:
+ArrayList vars = new ArrayList();
+ArrayList dts = new ArrayList();
+ArrayList foris = new ArrayList();
+ArrayList dts2 = new ArrayList();
+ArrayList aux = new ArrayList();
+ArrayList aux2 = new ArrayList();
+String cadena="";
+String tipo="";
+String cadfor="";
+String cad="";
+String comp="";
+int po=0,ps=0;
+String [] valores;
+
+void sets(Object id, Object value)
+{
+for(int i=0; i<vars.size();i++)
+{
+  if(id.equals(vars.get(i)))
+      {
+      dts.add(i,value);
+      }
+}
+ 
+
+}
+
+ 
+ void sets2(Object id, Object value,ArrayList arr1,ArrayList arr)
+{
+for(int i=0; i<arr1.size();i++)
+{
+  if(id.equals(arr1.get(i)))
+      {
+      arr.add(i,value);
+      }
+}
+ 
+ 
+ 
+
+}
+
+
+
+
+
+
+
+int indx2(Object id,ArrayList ls)
+{
+for(int i=0; i<ls.size();i++)
+{
+  if(id.equals(ls.get(i)))
+      {
+	return i;
+      }
+}
+
+return -1;
+
+}
+
+int indx(Object id)
+{
+for(int i=0; i<vars.size();i++)
+{
+  if(id.equals(vars.get(i)))
+      {
+	return i;
+      }
+}
+
+return -1;
+
+}
+
+
+
+void csv(String dir) throws IOException
+{
+File archivo = new File(dir); 
+if(archivo.exists())
+{
+    System.out.println("não fez nada");
+}
+else{
+System.out.println("existe");
+FileWriter crear = new FileWriter(archivo);  
+}
+}
+
+void write1(String nome,String cade)
+{
+ BufferedWriter writes;
+       try
+       {
+       writes= new BufferedWriter(new FileWriter(nome));
+       writes.write(cade);
+       writes.close();
+       }
+       catch(Exception ex)
+       {ex.printStackTrace();}
+
+}
+
+void write2(String nome,String cade)
+{
+    ArrayList li = new ArrayList();
+ try{
+                BufferedReader br = new BufferedReader(new FileReader(nome));
+                
+                String line= br.readLine();
+               
+                while (line!= null) 
+                {
+                   li.add(line);
+                  line = br.readLine();
+                }
+            } catch (Exception ex) 
+            {
+            }   
+    
+    
+    
+    
+ BufferedWriter writes;
+       try
+       {
+       writes= new BufferedWriter(new FileWriter(nome));
+       li.add(cade);
+       
+       for(int i=0; i<li.size();i++)
+        {
+         
+         writes.write(li.get(i).toString()+"\n");
+              
+        }
+       
+       writes.close();
+       }
+       catch(Exception ex)
+       {ex.printStackTrace();}
+
+}
+
+void writesonit(String nome,String cade,Object tipo)
+{
+  if(tipo.equals ("escribir"))
+  {
+    write1(nome,cade);
+  }
+  else if(tipo.equals("agregar"))
+  {
+  write2(nome,cade);
+  }
+}
+
+void vaiescrever(Object os,Object no)
+{
+ if(ps==-1)
+                    {
+                    int pos= indx(os);
+                    
+                        if(pos==-1)
+                        {
+                        writesonit(dts.get(po).toString(),os.toString(),no);
+                        }else{
+                    writesonit(dts.get(po).toString(),dts.get(pos).toString(),no);
+                        }
+                    
+                  }else
+                  {
+                      writesonit(dts.get(po).toString(),aux2.get(ps).toString(),no); 
+                  }
+
+}
+
+
+
+
+:}
+
+
+
+terminal as,svar,funcs,end,ifs,elses,endif,fors,endfor,prints,writes,adds,y,ou,nao;
+terminal  maior, maiori,menor, menori,dif,igual,incluish,ident,real,numero,inc,vars;
+terminal  dpts,pabi,pcer,coma,pyc,apos,iguais,cade,intgr , strng,decimal,voids,concat;
+terminal prink,sum;
+
+
+nonterminal  lengua,Binc,inclu,Bvars,varis, tipos,logicos;
+nonterminal Bpara, para,tipo1,Bfunc, funcios,Bafunc,asif,bs;
+nonterminal Bpara2,para2,fu,Bfor,tipo2,operad,oo,sif,rasif;
+nonterminal  rcondicion,condicion,Batodo,Bp , pa, nossa,todo;
+
+
+
+start with lengua;
+
+lengua::=  inc dpts Binc vars{:vars.clear();dts.clear();:} dpts Bvars  funcs dpts Bfunc ;
+
+ 
+Binc::= Binc inclu
+		|inclu;
+		
+inclu::= apos incluish apos;
+
+
+Bvars::= Bvars varis
+		   |varis;
+
+
+varis::=  ident:id{:vars.add(id);:}  as tipos
+		 | ident:i  iguais cade:c{:sets(i,c); :}
+		 | ident:i iguais  numero:c{:sets(i,c); :}
+		 | ident:i iguais  real:c{:sets(i,c); :}
+		 | ident:i iguais concat pabi Bpara:pa{: String[] va =cadena.split(",");
+                    String ss="";
+                    for(int is=0;is<va.length;is++)
+                    {
+                        int p = indx(va[is]);
+                        ss+= dts.get(p);
+                    }
+                    
+                   sets(i, ss);  :} pcer;
+
+
+tipos::= intgr
+		 |strng
+		 |decimal;
+		
+
+Bpara::= Bpara para
+		  |para;
+
+para::=  ident:i{:RESULT=i;cadena+= i;:}
+		  |cade:i{:RESULT=i;cadena+= i;:}
+		  |numero:i{:RESULT=i;cadena+= i;:}
+		  |real:i{:RESULT=i; cadena+= i;:}
+		  |coma:i{:RESULT=i; cadena+= i;:};
+
+		  
+Bfunc::= Bfunc funcios
+		  |funcios;
+		  
+funcios::= tipo1 ident pabi Bpara pcer dpts Bafunc   end
+		     |tipo1 ident pabi  pcer dpts  Bafunc end
+		     |voids prink pabi pcer dpts  Bafunc end;
+
+
+Bfor::=  fors{: foris.clear(); dts2.clear(); aux.clear(); aux2.clear();  :} pabi  ident:id{: foris.add(id); :}  as  tipos pyc  svar pabi  ident:ide coma tipo2:va{: sets2(ide,va,foris,dts2);  :} pcer  pyc    condicion:m{:valores=m.toString().split(",");   :}    pyc  ident iguais sum  pabi ident coma numero pcer    pcer   
+		  Batodo        endfor;
+
+
+
+
+Batodo::= Batodo todo
+		      |todo;
+
+todo::=       ident:i{:aux.add(i);:}  as tipos
+		      | ident:ids  iguais cade:c{: sets2(ids,c,aux,aux2); :}
+		      | ident:ids iguais  numero:c{: sets2(ids,c,aux,aux2); :}
+		      | ident:ids iguais  real:c{: sets2(ids,c,aux,aux2); :}
+		      |prints pabi oo:op{: po= indx(op);
+								  csv(dts.get(po).toString()); :}  coma oo:os{: ps= indx2(os,aux);  :} coma nossa:no{:  tipo=no.toString(); 
+
+			 int va = Integer.parseInt(dts2.get(indx2(valores[0], foris)).toString());
+                
+                
+                int n= Integer.parseInt(valores[2].toString());
+              if("<".equals(valores[1]))
+                {
+                    for(int t=va; va < n;va++)
+                    {
+                        vaiescrever(os, no);
+                    }
+                }else if(">".equals(valores[1]))
+                {
+                    for(int t=va; va > n;va++)
+                    {
+                        vaiescrever(os, no);
+                    } 
+                }  else if(">=".equals(valores[1]))
+                {
+                    for(int t=va; va >= n;va++)
+                    {
+                        vaiescrever(os, no);
+                    } 
+                }  else if("<=".equals(valores[1]))
+                {
+                    for(int t=va; va <= n;va++)
+                    {
+                        vaiescrever(os, no);
+                    } 
+                }  else if("==".equals(valores[1]))
+                {
+                    for(int t=va; va == n;va++)
+                    {
+                        vaiescrever(os, no);
+                    } 
+                } 
+								  
+								  
+								  :}  pcer
+		      | ident:ids iguais concat pabi Bp:c{: cad+=c;   :}  pcer{:sets2(ids,cad,aux,aux2);cad=""; :}
+		      | ident pabi  Bpara2  pcer  
+		      | ident pabi   pcer  
+		      | bs
+		      |Bfor
+		     
+		      ;
+
+
+
+Bp::= Bp pa:p{:RESULT=p; :}
+	    |pa:p{:RESULT=p; :};
+	    
+pa::=   ident:c{:   RESULT=c; :}
+	     |cade:c{:   RESULT=c; :}
+	     |numero:c{:  RESULT=c; :}
+	     |real:c{:    RESULT=c; :}
+	     |coma:c{:   RESULT=c; :}
+	     |ident pabi Bpara pcer
+	     |ident pabi pcer;
+		      
+oo::=  cade:c{:RESULT=c;:}
+	    |ident:id{:RESULT=id;:};
+
+tipo2::=  numero:n{:RESULT=n; :}	
+		  |ident:n{: int m = indx(n); Object va = dts.get(m);  RESULT=va;    :}	
+		  |real:n{:RESULT=n; :};
+		  
+nossa::=  writes:w{:RESULT=w; :}
+		    |adds:a{:RESULT=a;:};
+		     
+		     
+Bafunc::=	Bafunc fu
+		     | fu;
+
+fu::=  ident pabi  Bpara2  pcer  
+	    |ident pabi   pcer  
+	    |sif
+	    |Bfor;
+
+	    
+bs::= 	  ifs  pabi  rcondicion  pcer Batodo rasif  endif;   	    
+
+
+
+sif ::=   ifs  pabi  rcondicion  pcer  Batodo  rasif          endif
+	     | ifs  pabi  rcondicion  pcer Batodo     endif ;		    
+
+
+rasif::=  rasif  asif
+		  |asif;
+ 
+ asif::= elses  Batodo
+	       ;
+	    
+	    
+	    
+	    
+	    
+		  
+para2::=   ident
+		    |numero
+		    |real
+		    |cade
+		    |coma
+		    |concat pabi Bpara2  pcer;
+
+Bpara2::= Bpara2 para2
+		    |para2;
+
+
+
+
+tipo1::=  intgr
+		 |strng
+		 |voids
+		 |decimal;
+
+		 
+		 
+rcondicion::=  rcondicion  condicion
+			      |condicion;
+ 
+condicion::=   ident:i operad:o tipo2:v{: cadfor=i+","+o+","+v ; RESULT=cadfor;  :} 
+			     |ident operad  ident pabi Bpara pcer
+			     |ident:i operad:o  ident:is{: comp +=is;    :} pabi:pa{: comp +=pa;    :}  pcer:pc{: comp +=pc; gh:}
+			     |logicos;
+			     
+		  
+		  
+		  
+		  
+ operad::=  maior:m{:RESULT=m;:} 
+			|maiori:m{:RESULT=m;:}
+			|menor:m{:RESULT=m;:}
+			|menori:m{:RESULT=m;:}
+			|igual:m{:RESULT=m;:} 
+			|dif:m{:RESULT=m;:};
+			
+			
+ logicos::= nao
+		      |ou
+		      | y;
+ 			
+		  

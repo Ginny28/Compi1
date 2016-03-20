@@ -1,0 +1,14 @@
+Vars
+<
+var tam, ini, fin;
+setVar(tam, 8);
+ >
+ 
+Pintar:EscenARio1<
+seVar(fin, 11);
+Pintar(color1,1,5);
+pintar(color2,2..5,7);
+pintar(color1,tam,2..fin);
+pintar(color2,ini,(- fin 2));
+//comentsar
+>

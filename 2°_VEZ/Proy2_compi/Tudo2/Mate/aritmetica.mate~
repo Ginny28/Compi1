@@ -1,0 +1,43 @@
+IncLuir(usuarios.edd);
+Incluir (principal.prn);
+DeclaraR:
+a; //Creación de variable
+b -> 32; //Asignación de variable
+b -> 2.45;
+c -> (+ 4 (* 3 a)); //Operación aritmética
+fIN declarar;
+Funciones:
+Definir factorial(num):entero
+Si (num == 0):
+Si (num == 0):
+
+Retorno -> 1;
+Sino:
+retorno -> (* num factorial((- num 1)));
+Fin Si;
+
+
+Retorno -> 1;
+Sino:
+retorno -> (* num factorial((- num 1)));
+Fin Si;
+Fin DEfinIr;
+Definir Suma3(op1,op2,op3):entero
+Retorno -> (+ op1 (+ op3 op2));
+fin definir;
+Definir Suma3(op1,op2,op3,op4):decimal //Polimorfismo
+suma -> (+ op2 (% op3 op1));
+suma -> (* suma op4);
+retorno -> suma;
+fin definir;
+Definir Suma3(op1,op2,op3):entero //Sobrecarga
+Suma;
+ParA (b ->op1: b >= 5 and b <= 10: b -> (+ 1 op2)):
+Suma -> (^ obtenerEdad(b) Suma); //obtenerEdad del archivo incluido
+Fin para;
+Retorno -> Suma;
+fin definir;
+DefinIR sum(op1,op2):entero
+Retorno -> (+ op1 op2);
+Fin definir;
+fIN funcionEs;

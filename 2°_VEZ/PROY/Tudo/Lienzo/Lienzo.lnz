@@ -1,0 +1,32 @@
+{LienZOs:{
+EscenARio1:{
+ NombrE:'Armadillo'
+Tipo:'PNG'
+ Fondo:{
+ Red:25
+ Blue:89
+Green: 45
+ }
+ TamANho:{
+cuadro:10
+dimension:11
+ }
+imagen : P
+},
+EsCENARio2:{
+Imagen: G
+Fondo:{
+HEX:#ABB36c
+}
+TamANho:{
+cuadro:20
+ dimesion: 5
+}
+NombrE:'SuperMan'
+Tipo:'GIF'
+ }
+
+ }
+
+}
+

@@ -1,0 +1,296 @@
+package proy2_compi;
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+
+
+
+parser code {:
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+public static ArrayList first = new ArrayList();
+public static ArrayList second = new ArrayList();
+public static ArrayList third = new ArrayList();
+public static ArrayList  four = new ArrayList();
+
+public void syntax_error(Symbol s){ 
+
+System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+first.add(s.left+1);
+second.add(s.right);
+third.add(s.value);
+four.add("Sintactico");
+
+
+}
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+
+:}
+
+action code
+{:
+  float  value1;
+  ArrayList vars= new ArrayList();
+  ArrayList  values = new ArrayList();
+  int pos=0;
+public static double opera(String simb, Float var1, Float var2)
+{
+      if(simb.equals("*"))
+	  {
+	   double  resu = var1 * var2;
+	   return resu;
+	  }
+      else  if(simb.equals("/"))
+	  {
+	   double  resu = var1 / var2;
+	   return resu;
+	  }
+	else  if(simb.equals("+"))
+	  {
+	  double  resu = var1 + var2;
+	   return resu;
+	  }
+	  else  if(simb.equals("-"))
+	  {
+	   double  resu = var1 - var2;
+	   return resu;
+	  }
+	  else  if(simb.equals("^"))
+	  {
+	   double  resu =  Math.pow(var1 , var2);
+	   return resu;
+	  }
+	  else  if(simb.equals("%"))
+	  {
+	   double  resu = var1 % var2;
+	   return resu;
+	  }
+        return 0;
+
+}
+
+double rtuvalu(String ids)
+{
+ for(int i=0;i<vars.size();i++)
+                 {
+                     if(ids.equals(vars.get(i)))
+                     {
+                      double p = Double.parseDouble(values.get(i).toString());
+                     return p;
+                     }
+                 }
+    
+    return 0;
+    
+}
+
+void insertvar(String ids)
+{
+     if(!vars.contains(ids))
+     {
+         vars.add(ids);
+     }
+}
+
+
+
+void setsvar(String ids,String k)
+{
+for(int j=0;j<vars.size();j++)
+  {
+    if(ids.equals(vars.get(j).toString()))
+    {
+        values.add(j, k);
+    }
+  }
+               
+}
+
+
+
+:}
+
+
+
+terminal  dec,fdec,inc,ifs,elses,endif,fors,endfor,whiles,endwhile,func,finfuc,def , findef,y,ou,nao;
+terminal  maior, maiori,menor, menori,dif,igual,incluish,ident,real,reto;
+terminal numero,cosito,dpts,pyc,abi,cerra,coma,mais,menos,multi,div,mod,pot;
+
+terminal  intgr , strng,decimal,voids;
+
+
+nonterminal  lengua;
+nonterminal Bdeclarar, Bfuncoes , Bvariables,Bvar;
+nonterminal tipo,opera,sim,tipo2,tipo1,adentro;
+
+
+nonterminal Bdeffunc , Bdefinir,tipo3, para ,Bpara;
+nonterminal sif, asif,operad,tipo4,opera2,rasif,swhile,sfor,kinds;
+nonterminal radef, adef,condicion,rcondicion,logicos,Binc,inclu;
+
+start with lengua;
+
+lengua::=  Binc  Bdeclarar Bfuncoes ;
+
+
+Binc::= Binc inclu
+		|inclu;
+		
+inclu::= 	inc abi incluish cerra pyc;
+
+
+
+// bloque declaracion 
+Bdeclarar::=   dec dpts  Bvar   fdec:b{:System.out.println(values.size());:} pyc
+			     |error;
+			      
+Bvar::= Bvar Bvariables
+		|Bvariables;
+
+Bvariables::=  ident:ids{:vars.add(ids); values.add("");:} pyc 
+			     | ident:id{:insertvar(id.toString());:} cosito kinds:k {: setsvar(id.toString(), k.toString()); :} pyc 
+			     ;
+			     
+kinds::= tipo:t{: RESULT =t;:}
+		  |opera:o{:RESULT=o;:};
+			     
+			    
+opera::=  abi  sim:Ss  tipo2:r   abi  sim:S  tipo2:r1  tipo2:r2 cerra:p{:value1=(float) opera(S.toString(), Float.parseFloat(r1.toString()),Float.parseFloat(r2.toString())); :} cerra:d{: double tot= opera(Ss.toString(),Float.parseFloat(r.toString()),value1); RESULT=tot;  :}
+		    |abi  sim:ss  abi  sim:s  tipo2:r  tipo2:r1 cerra:c{: value1 =(float) opera(s.toString(),Float.parseFloat(r.toString()),Float.parseFloat(r1.toString()));:}  tipo2:r2 cerra:cc{: double tot = opera(ss.toString(),value1,Float.parseFloat(r2.toString()));RESULT=tot;:} 
+		    |abi  sim:s  tipo2:r tipo2:r1 cerra:c{: value1 =(float) opera(s.toString(),Float.parseFloat(r.toString()),Float.parseFloat(r1.toString())); RESULT=value1  :};
+
+tipo::=  numero:n{:RESULT=n;:}
+		|real:n{:RESULT=n;:};
+
+tipo2::= numero:m{:RESULT =m;:}
+		 |real:m{:RESULT =m;:}
+		 |ident:m{:Object va= rtuvalu(m.toString());
+                RESULT =va;:};
+
+sim::=  mais:m{:RESULT =m;:}
+	      |menos:m{:RESULT =m;:}
+	      |multi:m{:RESULT =m;:}
+	      |div:m{:RESULT =m;:}
+	      |mod:m{:RESULT =m;:}
+	      |pot:m{:RESULT =m;:};
+	      
+	      
+	      
+//Bloque funciones 
+Bfuncoes::=  func dpts  Bdeffunc    finfuc pyc 
+			     |error;
+ 
+ 
+Bdeffunc::= Bdeffunc Bdefinir
+			  |Bdefinir;
+
+ 
+Bdefinir::= def ident abi Bpara cerra dpts tipo3    radef      findef pyc;
+
+
+Bpara::=  Bpara para
+		    |para;
+		    
+
+para::=     ident
+		  | coma;
+ 
+
+
+tipo3::= intgr
+		  |strng
+		  |decimal
+		  |voids;
+ 
+ 
+ radef::= radef  adef
+		  |adef;
+ 
+ adef::= sif
+		 |swhile
+		 |sfor
+		 |tipo4;
+ 
+ 
+ //bloque  sentencias
+ 
+ 
+ 
+ sif ::=   ifs  abi rcondicion  cerra dpts  tipo1    rasif   endif pyc ;
+ 
+ 
+ 
+ 
+ 
+ 
+ rasif::=  rasif  asif
+		  |asif;
+ 
+ asif::= elses dpts tipo1
+	      |elses ifs  abi rcondicion cerra dpts tipo1 
+	      |sif;
+ 
+ 
+ 
+ swhile::= whiles abi  rcondicion cerra dpts  tipo1    endwhile pyc  ;
+ 
+ 
+ 
+ sfor::=  fors  abi  tipo2 cosito tipo2 dpts  rcondicion dpts  tipo2 cosito abi sim  tipo2 tipo2   cerra   cerra dpts    tipo1     endfor   pyc;
+ 
+ 
+ 
+ 
+ 
+ tipo1::= tipo1 tipo4
+		  | tipo4;
+
+ 
+ tipo4 ::= reto cosito opera pyc	
+		    |reto cosito opera2 pyc
+		    |reto cosito tipo2 pyc
+		    |ident cosito opera pyc
+		    |ident cosito opera2 pyc
+		    |ident  pyc
+		    ;
+		 
+ 
+
+ 			    
+opera2::=  abi  sim  tipo2  tipo2  abi  adentro    cerra cerra 
+		      |abi  sim   tipo2  abi  adentro  cerra  tipo2 cerra  ;
+		      
+		      
+		      
+adentro::=  abi sim  tipo2 tipo2  cerra 
+			  |tipo2;
+		     
+	   
+ operad::=  maior 
+			|maiori
+			|menor
+			|menori
+			|igual 
+			|dif;
+			
+rcondicion::=  rcondicion  condicion
+			      |condicion;
+ 
+ condicion::=  ident operad tipo2 
+			     |logicos;
+ 
+ 
+ logicos::= nao
+		      |ou
+		      | y;
+ 
+ 

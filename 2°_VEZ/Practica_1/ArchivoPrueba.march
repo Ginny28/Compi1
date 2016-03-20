@@ -1,0 +1,31 @@
+<inicio>
+Var Integer num1=10;
+Var Integer num2;
+Var Float num3;
+Var Float num4;
+Var String str1;
+Var String str2="Segunda linea";
+Var Char car1='C';
+
+Print "Este es el inicio del archivo";
+Print str2;
+num2=15;
+/*
+*******************Inicio de Operaciones***************
+*/
+Operacion(5+num2*num1);
+Operacion((num1/2)-(num2*2));
+num2=20; //Asignando a num2 el valor de 20
+Operacion(5+num2*num1);
+Graficar(2,4,2:5:num2);
+Graficar(3,2,-1:0:10);
+Operacion((num3+num4)*(2-(5)));
+/*
+*********************Fin de Operaciones*****************
+*/
+Print car1;
+Var String str3="Fin del archivo";
+Print str3;
+
+
+<fin>

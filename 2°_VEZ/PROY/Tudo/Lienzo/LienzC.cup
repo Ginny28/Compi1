@@ -1,0 +1,249 @@
+package proy1_compi;
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+
+
+parser code {:
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+public static ArrayList first = new ArrayList();
+public static ArrayList second = new ArrayList();
+public static ArrayList third = new ArrayList();
+public static ArrayList  four = new ArrayList();
+
+public void syntax_error(Symbol s){ 
+
+System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+first.add(s.left+1);
+second.add(s.right);
+third.add(s.value);
+four.add("Sintactico");
+
+
+}
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+
+:}
+
+action code
+{:
+static ListaE  escen = new ListaE();
+private String nomes="";
+private String tipos="";
+private String imagen="";
+private String color1="";
+
+private String  vermelho ="";
+private String  verde="";
+private String  azul="";
+private String  hexs="";
+
+private String cuadros="";
+private String dime ="";
+static JLabel [][] labe;
+
+public static void vertodo(JComboBox boxi)
+{
+    NodoE n = escen.primero;
+        while(n!=null)
+        {
+          boxi.addItem(n.escenario);
+            n=n.sig;
+        }
+
+}
+    
+
+public static void CrearLienzo(JComboBox jComboBox1, JPanel pane1,JLabel jLabel1, JPanel pane2,JRadioButton jRadioButton1, JRadioButton jRadioButton2, JRadioButton jRadioButton3)
+{
+ NodoE  n  = proy1_compi.CUP$parser$actions.escen.primero;
+        while(n!=null)
+        {
+        
+	  
+        
+        
+            if(n.escenario.equals(jComboBox1.getSelectedItem()))
+            {
+            jLabel1.setText("Lienzo:"+n.nombre);
+            int d = Integer.parseInt(n.dime);
+            int t =  Integer.parseInt(n.cuadro);
+            pane1.removeAll();
+            madeIt(d, t, pane1, pane2);
+            pane1.setPreferredSize(new Dimension(d*t, d*t));
+            sizes(jRadioButton1,jRadioButton2,jRadioButton3,n);  
+            
+            if(n.hex=="")
+          {
+          
+              
+           String col[]= n.color.split(",");
+//             
+              int red = Integer.parseInt(col[0]);
+              int blue= Integer.parseInt(col[1]);
+              int green= Integer.parseInt(col[2]);
+              pane1.setBackground(new java.awt.Color(red, green, blue));
+         
+            //  System.out.print(red+":"+blue+":"+green);
+          }
+          else 
+          {
+               if (n.hex.startsWith("#"))
+            {   
+             String po = n.hex.substring(1, n.hex.length());   
+              pane1.setBackground(new Color(Integer.parseInt(po, 16)));
+         
+         //    System.out.print(po);
+             }
+             
+          
+          }
+            
+            
+            }
+        n= n.sig;
+        }
+
+}
+
+
+
+public  static void madeIt( int d,int t,JPanel pane1,JPanel pane2)
+{
+        
+        labe = new JLabel[d][d];
+
+        for(int i=0;i<d;i++)
+        {
+            for(int j=0; j<d;j++)
+            {
+               
+
+                labe[i][j] = new JLabel();
+
+                labe[i][j].setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, false));
+                labe[i][j].setBounds(i*t, j*t,t,t);
+                pane1.add(labe[i][j]);
+               labe[i][j].repaint();
+               //labe[i][j].updateUI();
+
+            }
+            
+            pane1.updateUI();
+        }
+
+       
+        pane2.resize(130, 446);
+        
+
+}
+
+  public static void  sizes(JRadioButton jRadioButton1, JRadioButton jRadioButton2, JRadioButton jRadioButton3,NodoE n )
+   {
+   jRadioButton1.removeAll();
+       jRadioButton2.removeAll();
+       jRadioButton3.removeAll();
+    if(n.image.equalsIgnoreCase("P"))
+            {
+                jRadioButton1.setSelected(true);
+                jRadioButton1.setEnabled(true);
+                jRadioButton2.setEnabled(false);
+                jRadioButton3.setEnabled(false);
+                jRadioButton2.setSelected(false);
+                jRadioButton3.setSelected(false);
+            
+            }
+             if(n.image.equalsIgnoreCase("G"))
+            {
+                jRadioButton3.setSelected(true);
+                jRadioButton3.setEnabled(true);
+                jRadioButton2.setEnabled(false);
+                jRadioButton1.setEnabled(false);
+                jRadioButton2.setSelected(false);
+                jRadioButton1.setSelected(false);
+            
+            }
+              if(n.image.equalsIgnoreCase("M"))
+            {
+                jRadioButton2.setSelected(true);
+                jRadioButton2.setEnabled(true);
+                jRadioButton1.setEnabled(false);
+                jRadioButton3.setEnabled(false);
+                jRadioButton1.setSelected(false);
+                jRadioButton3.setSelected(false);
+            
+            }
+   
+   
+   }
+:}
+
+
+//terminals 
+terminal lienzo,nome,fondo,red,blue,green,tam,cuadro,dim;
+terminal  tipo,ext,ima,kind,esce,hex,hexc,abi,cer,dponto,coma,comi;
+terminal  letras;
+terminal Integer numero;
+
+// nonterminal
+nonterminal lenguaje,Be;
+nonterminal  Besce,Baesce,Bae;
+nonterminal Baf,Bafr;
+nonterminal Btam;
+
+
+start with lenguaje;
+
+lenguaje::=  abi lienzo{:escen.deletes();:} dponto abi Be cer cer;
+		   
+
+Be::= Be Besce
+	  |Besce
+	 
+	  ;
+
+Besce::= esce:es{:hexs="";vermelho=""; azul="";verde=""; :} dponto abi Bae cer {: escen.insertar(es.toString(),nomes, tipos, imagen,color1,hexs,cuadros,dime);:}
+	      | coma
+	      |error{::};
+
+
+Bae::= Bae Baesce
+	  |Baesce
+	   ;
+	  
+Baesce::= nome dponto comi  letras:l{: nomes=(String)l;:} comi 
+		|tipo dponto comi ext:e{: tipos= (String)e;:} comi
+		|ima dponto kind:k{:imagen=(String)k; :}
+		|fondo dponto abi Bafr{: color1=vermelho+azul+verde; :} cer
+		|tam dponto abi Btam cer
+		|error{::};
+   
+
+Bafr::= Bafr Baf
+	    |Baf
+	    ;
+
+	    
+
+Baf::=red dponto numero:r{: vermelho =String.valueOf(r)+","; :}
+	  |blue dponto numero:b{: azul = String.valueOf(b)+"," ; :}
+	  |green dponto numero:g{: verde = String.valueOf(g); :}
+	  |hex dponto hexc:h {:hexs =(String) h;:}
+	  |error{::};
+
+Btam ::= cuadro dponto numero:n{: cuadros = String.valueOf(n); :}  dim dponto numero:n2{:dime= String.valueOf(n2);  :}
+	      | dim dponto numero  cuadro dponto numero
+	      |error{::};
+	  

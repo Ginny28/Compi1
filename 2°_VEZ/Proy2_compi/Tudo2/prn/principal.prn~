@@ -1,0 +1,26 @@
+IncLuir:
+'aritmetica.mate'
+'nodos.edd'
+VariaBLes:
+ubicacion as cadena
+archivo as cadena
+completa as cadena
+/*Asignacion de valores*/
+ubicacion = "/home/Jarvis/"
+archivo = "Listado.csv"
+completa = concat(ubicacion,archivo)
+FuncIoneS:
+vacio llenarPila():
+ParA (b as entero; SetVar(b,0); b < obtenerTamArreglo(); b = sum(b,1))
+insertarPila_nombre(concat("Julien",b))
+insertarPila_edad(b)
+Fin para
+fin
+vacio Principal():
+llenarPila()
+ParA (b as entero; SetVar(b,0); b < obtenerTamArreglo(); b = sum(b,1))
+entrada as cadena
+entrada = concat(obtenerNombre(b),",",obtenerEdad(b),"\n")
+imprimir(completa,entrada,agregar)
+Fin para
+fin

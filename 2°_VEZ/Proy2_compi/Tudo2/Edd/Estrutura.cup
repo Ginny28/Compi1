@@ -1,0 +1,304 @@
+package proy2_compi.estrutura;
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+
+
+
+parser code {:
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+public static ArrayList first = new ArrayList();
+public static ArrayList second = new ArrayList();
+public static ArrayList third = new ArrayList();
+public static ArrayList  four = new ArrayList();
+
+public void syntax_error(Symbol s){ 
+
+System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+first.add(s.left+1);
+second.add(s.right);
+third.add(s.value);
+four.add("Sintactico");
+
+
+}
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+
+:}
+
+action code{:
+ArrayList varia = new ArrayList();
+ArrayList  dts = new ArrayList();
+ArrayList fun = new ArrayList();
+ArrayList  retfun = new ArrayList();
+String [] vectorx;
+String cadena ="";
+
+public int position(Object  var,ArrayList varis)
+{
+  for(int j =0;j<varis.size();j++)
+  {
+	if(varis.get(j).toString().equals(var))
+	{
+	  return j;
+	  
+	}
+  }
+  return 0;
+
+}
+
+
+
+
+:}
+
+
+
+
+terminal  maior, maiori,menor, menori,dif,igual,incluish,ident,numero,real;
+terminal  intgr , strng,decimal,voids,tam,inser,extr,empty,y,ou,nao,reto;
+terminal  ab,fechar,cosito,dpts,ponto,pabi,pcer,coma,abrir,cerrar,cade;
+terminal  inc,vars,setvar,fifo,lifo,arrays,struc,ifs,elses,rep,until,func,fu;
+
+
+
+nonterminal lengua,Binc,inclu,Bvariables,Bfuncoes; 
+nonterminal  tipos,varis,vari, rvari,sti,rarray,array;
+nonterminal  vaden,adentrito,radentrito,tipos1,va,sent;
+nonterminal Bpara, para,Bafun,Breto,Brfuncoes,Btudo,fucoes;
+nonterminal Bpara2, para2,Bpara3,para3,Bvari2,varis2,condicion;
+nonterminal sif,rasif,asif,suntil,rcondicion,tipo2,operad,logicos;
+
+
+
+
+
+
+start with lengua;
+
+lengua::=   abrir  Binc	 vars{:varia.clear(); dts.clear();  :} abrir Bvariables cerrar{: for(int i=0 ; i<varia.size();i++)
+                {
+                 //   System.out.println(varia.get(i)+"->"+dts.get(i));
+                
+                }:}  func  abrir    Brfuncoes     cerrar    cerrar ;
+
+
+Binc::= Binc inclu
+		|inclu;
+		
+inclu::= 	inc pabi  incluish pcer menor; 
+
+
+
+
+
+
+Bvariables::=  Bvariables varis
+			      |varis;
+
+
+varis::=   tipos:ty dpts  rvari menor
+		  |setvar pabi va:v coma sti:r{:int p = position(v,varia); dts.set(p,r);:}  pcer menor
+		  | fifo menor  tipos maior dpts rvari menor
+		  |lifo menor  tipos maior dpts rvari menor
+		  |arrays menor  tipos maior dpts rarray  menor
+		  |struc dpts ident abrir radentrito cerrar
+		  |arrays  dpts rarray  menor 
+		  |ident ponto inser pabi sti  pcer menor ;
+		  
+		  
+fucoes::= inser
+		    |extr
+		    |empty;
+
+sti::=  real:r{:RESULT=r;:}
+	    |numero:r{:RESULT=r;:}
+	    |cade:r{:RESULT=r;:}
+	    |ident ponto extr pabi pcer ;
+		  
+
+va::= ident cosito ident
+	   |ident ab vaden fechar cosito ident
+	   |ident ab vaden fechar  ab vaden fechar cosito ident
+	   |ident ab vaden fechar 
+	   |ident ab vaden fechar  ab vaden fechar
+	   |ident:id{:RESULT=id;:};
+		  
+		  
+rarray::=  rarray array
+		    | array;
+
+array::=  ident ab vaden:p fechar {: vectorx = new String[Integer.parseInt(p.toString().trim())];:}
+		  |ident ab vaden fechar  ab vaden fechar
+		  |coma;
+		  
+vaden::= numero:r{:RESULT = r;:}
+		   | ident:r{: int p =position(r,varia);     RESULT= dts.get(p);:};
+
+radentrito::= radentrito adentrito
+			    |adentrito;
+			    
+adentrito::=  tipos dpts  rvari menor;
+		  
+rvari::= rvari vari
+	       |vari;
+
+
+vari ::= ident:v{:varia.add(v); dts.add(0);:}
+	      |coma;	
+	      
+	      
+Brfuncoes::= Brfuncoes Bfuncoes	
+			    |Bfuncoes;
+			
+	      
+Bfuncoes::= fu dpts ident pabi  Bpara   pcer dpts tipos1 abrir Btudo cerrar 
+			    |fu dpts ident:id pabi:pa pcer:pc dpts{:cadena = id+pa+pc; :} tipos1{:func.add(cadena); cadena=""; :} abrir Btudo:v{:v:} cerrar ;
+	      
+
+Bpara::=  Bpara para
+		    |para;
+		    
+ 
+para::=    tipos  ident
+		  | coma
+		 ;	   
+		  
+Btudo::=Btudo Bafun:v{:RESULT=v;:}
+		  |Bafun:v{:RESULT=v;:};
+		  
+		  
+Bafun::=  reto Breto:v{:RESULT=v;:}  menor
+		    |Breto:v{:RESULT =v;:}
+		    |sent
+		    
+		    ;
+		    
+		    
+Breto ::=ident ab vaden fechar  ponto ident
+		  |ident ab vaden fechar  ab vaden fechar ponto ident
+		  |ident ponto tam {: int val = vectorx.lenght; RESULT = val; :}
+		  |ident ponto inser pabi Bpara2  pcer menor
+		  |varis2
+		  |para2
+		 
+		  
+		  ;  
+
+		  
+		  
+Bvari2::= Bvari2 varis2
+		    |varis2;
+		    
+		    
+varis2::= tipos dpts  rvari menor
+		  |setvar pabi va coma  para2   pcer menor
+		  | fifo menor  tipos maior dpts rvari menor
+		  |lifo menor  tipos maior dpts rvari menor
+		  |arrays menor  tipos maior dpts rarray  menor
+		  |struc dpts ident abrir radentrito cerrar
+		  |arrays  dpts rarray  menor ;
+
+
+
+sent::=   suntil
+		  |sif;
+		   
+		   
+		  
+//sentencias 
+ sif ::=   ifs  pabi rcondicion  pcer abrir  Bafun cerrar   rasif   ;		  
+		  
+rasif::=  rasif  asif
+		  |asif;
+ 
+ asif::= elses abrir Bafun cerrar
+	      |elses ifs pabi rcondicion pcer abrir Bafun cerrar ;
+	    
+
+suntil::= rep abrir  Bvari2   cerrar until pabi  rcondicion  pcer;
+   
+ 
+rcondicion::= rcondicion condicion
+			     |condicion;
+ 
+ 
+ 
+condicion::=  ident operad tipo2 
+			    |ident ponto empty 
+			    |logicos;
+			     
+
+			     
+tipo2::=  numero
+		  |real
+		  |ident
+		  |cade;
+			     
+ 
+  operad::=  maior 
+			|maiori
+			|menor
+			|menori
+			|igual 
+			|dif;
+ 
+ 
+  logicos::= nao
+		      |ou
+		      | y;
+ 
+		  
+		  
+		  
+
+Bpara2::= Bpara2 para2
+		      |para2;
+	      
+para2::=  ident
+		   |numero
+		   |real
+		   | ident pabi Bpara3 pcer
+		   |cade
+	          |ident ponto extr pabi pcer 
+		   | coma;
+		   
+
+
+Bpara3::= Bpara3 para3
+		    |para3;
+		    
+
+para3::= ident
+		  |ident pabi Bpara3 pcer
+		  |numero
+		  |real
+		  |coma;
+		    
+
+		   
+
+tipos::= intgr:i{: RESULT=i;:}
+		 |strng:i{: RESULT=i;:}
+		 |decimal:i{: RESULT=i;:}
+		 |ident:i{: RESULT=i;:};
+
+tipos1::= intgr
+		 |strng
+		 |decimal
+		 |voids;		 
+		 
+		 
+
+
