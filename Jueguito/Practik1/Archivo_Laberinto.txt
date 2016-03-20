@@ -1,0 +1,25 @@
+/* Archivo de entrada de prueba de
+* tamanio 20 por 20 */
+i,c,c,b,c,c,c,c,p,p,p,p,p,p,p,c,c,o,c,c;
+c,p,p,p,p,p,p,c,p,p,p,p,p,p,p,c,p,p,p,c;
+c,p,c,c,c,c,p,c,p,p,p,p,p,c,c,c,c,c,p,c;
+c,p,p,p,p,c,p,c,c,c,c,c,p,c,p,p,p,c,p,c;
+c,c,c,c,c,c,p,c,p,p,p,c,p,c,p,p,p,c,p,c;
+p,p,p,p,p,p,p,c,p,p,p,c,p,c,p,p,p,c,p,c;
+p,c,c,c,c,c,c,c,p,p,p,c,p,c,p,p,p,c,p,c;
+p,c,p,p,p,p,p,p,p,p,p,c,p,c,p,p,p,c,p,c;
+p,c,c,o,c,c,p,c,c,c,c,c,p,c,p,p,p,b,p,c;
+p,c,p,p,p,p,p,c,p,p,p,p,p,c,p,p,p,c,p,o;
+p,c,p,p,c,p,p,p,p,p,p,p,p,c,p,p,p,c,p,c;
+p,c,p,p,c,p,p,p,p,p,p,p,p,c,p,p,p,c,p,c;
+p,c,c,b,c,c,c,c,c,c,c,c,c,c,p,p,p,c,p,c;
+p,p,c,p,p,p,p,p,p,p,p,p,p,p,p,p,p,c,p,c;
+c,c,o,p,p,p,p,p,p,c,c,c,c,c,c,c,c,c,p,c;
+c,p,p,p,p,p,c,p,p,c,p,p,p,p,p,p,p,p,p,c;
+c,p,p,p,p,p,c,p,p,c,p,c,c,c,c,c,c,c,c,c;
+c,p,p,p,p,p,c,p,p,c,p,c,p,p,p,p,p,p,p,p;
+c,c,c,c,c,p,o,p,p,c,p,p,p,p,p,p,p,p,p,p;
+p,p,p,p,c,c,c,p,p,c,c,c,c,c,b,c,c,c,c,f;
+// Fin del archivo de entrada
+
+

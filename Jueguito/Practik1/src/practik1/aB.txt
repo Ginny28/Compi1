@@ -1,0 +1,11 @@
+Mover(x,7,E);
+Mover(y,6,S);
+Mover(X,6,O);
+Mover(Y,6,s);
+Mover(X,12,e);
+Mover(Y,10,n);
+Mover(X,4,E);
+Mover(Y,12,S);
+Mover(X,8,O);
+Mover(y,5,S);
+Mover(X,10,E);
