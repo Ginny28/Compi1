@@ -1,0 +1,108 @@
+import java.lang.System;
+
+class Analex {
+      public static void main(String argv[])
+	throws java.io.IOException {
+	Yylex yy = new Yylex(System.in);
+	while (yy.yylex() != null) {}	
+    }
+}
+
+class Yytoken {
+  Yytoken () {}
+}
+ 
+%%
+
+%eofval{
+  { System.exit(0); }
+%eofval}
+
+%line    
+%char  
+%ignorecase
+NUMBER = [1-9][0-9]*
+LETRAS = [a-zA-z]+
+ID= [NUMBER|LETRAS|"@"|"#"|"$"|"%"|"^"|"&"|"("|")"|"||"|","]+
+TF= "Negrita"|"Cursiva"|"Normal"
+
+XA= "<""XML"">"
+XC= "<""/""XML"">"
+
+InA= "<""Inicio"">"
+InC= "<""/""Inicio"">"
+LA = "<""Logo"">"
+LC = "<""/""Logo"">"
+PA = "<""Parrafo"">"
+PC = "<""/""Parrafo"">"
+BA= "<""Barra_Inicio"">"
+BC= "<""/""Barra_Inicio"">"
+VA= "<""Vinieta" ">"
+VC= "<""/""Vinieta"">"
+
+Vins= "<""L"">"
+%%
+
+<YYINITIAL> {XA} {System.out.println(yytext());}
+<YYINITIAL> {XC} {System.out.println(yytext());}
+<YYINITIAL> {InA} {System.out.println(yytext());}
+<YYINITIAL> {InC} {System.out.println(yytext());}
+<YYINITIAL> {LA} {System.out.println(yytext());}
+<YYINITIAL> {LC} {System.out.println(yytext());}
+<YYINITIAL> {PA} {System.out.println(yytext());}
+<YYINITIAL> {PC} {System.out.println(yytext());}
+<YYINITIAL> {BA} {System.out.println(yytext());}
+<YYINITIAL> {BC} {System.out.println(yytext());}
+<YYINITIAL> {VA} {System.out.println(yytext());}
+<YYINITIAL> {VC} {System.out.println(yytext());}
+<YYINITIAL> {Vins} {System.out.println(yytext());}
+<YYINITIAL> {TF} {System.out.println(yytext());}
+
+<YYINITIAL> "fondo" {System.out.println(yytext());}
+<YYINITIAL> "fuente" {System.out.println(yytext());}
+<YYINITIAL> "tam_fuente" {System.out.println(yytext());}
+<YYINITIAL> "color_fuente" {System.out.println(yytext());}
+<YYINITIAL> "Bode" {System.out.println(yytext());}
+<YYINITIAL> "color_borde" {System.out.println(yytext());}
+<YYINITIAL> "imagen" {System.out.println(yytext());}
+<YYINITIAL> "redondear_esquinas" {System.out.println(yytext());}
+
+<YYINITIAL> "Rojo" {System.out.println("Rojitoo");}
+<YYINITIAL> "Azul" {System.out.println(yytext());}
+<YYINITIAL> "Verde" {System.out.println(yytext());}
+<YYINITIAL> "Morado" {System.out.println(yytext());}
+<YYINITIAL> "Rosado" {System.out.println(yytext());}
+<YYINITIAL> "Blanco" {System.out.println(yytext());}
+<YYINITIAL> "Negro" {System.out.println(yytext());}
+<YYINITIAL> "Gris" {System.out.println(yytext());}
+<YYINITIAL> "Anaranjado" {System.out.println(yytext());}
+<YYINITIAL> "Celeste" {System.out.println(yytext());}
+
+<YYINITIAL> "Tamaño_Titulo" {System.out.println(yytext());}
+<YYINITIAL> "Texto_Titulo" {System.out.println(yytext());}
+<YYINITIAL> "Tipo_Fuente" {System.out.println(yytext());}
+
+
+<YYINITIAL> "Trebuchet" {System.out.println(yytext());}
+<YYINITIAL> "Arial" {System.out.println(yytext());}
+<YYINITIAL> "Georgia" {System.out.println(yytext());}
+<YYINITIAL> "Verdana" {System.out.println(yytext());}
+<YYINITIAL> "Courier" {System.out.println(yytext());}
+
+<YYINITIAL> "=" {System.out.println(yytext());}
+<YYINITIAL> ":" {System.out.println(yytext());}
+<YYINITIAL> {ID} {System.out.println(yytext());}
+<YYINITIAL>  {NUMBER} {System.out.println(yytext());}
+<YYINITIAL> "\"" {System.out.println(yytext());}
+<YYINITIAL> {LETRAS} {System.out.println(yytext());}
+<YYINITIAL>";" {System.out.println(yytext());}
+<YYINITIAL> "." {System.out.println(yytext());}
+<YYINITIAL> [\n] 		{yychar=0;}
+<YYINITIAL>  [" "\t\r]+ {}
+
+
+.
+  { 
+    System.out.println("error lexico en "  + yyline + "," + yychar + " No se reconoce " + yytext());
+    yychar=0;
+  }

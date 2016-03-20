@@ -1,0 +1,24 @@
+<Modulo_Comercial>
+Fecha = 21/08/2012;
+Hora = 10:25 am;
+<Cliente>
+Nombres:'Jose Israel';
+Apellidos:'Fernandes Chavarria';
+Nit:'125684-94';
+Direccion:'4 calle 1-60 zona 4, Guatemala, Guatemala';
+Telefono:53698788;
+Edad:18;
+<Factura>
+No=5;
+Fecha_venta=25-05-2001;
+<Detalle_factura>
+Cantidad:8;
+Producto:'Micro';
+Precio: 425;
+Descripcion: 'Marca Micro modelo 2000, color blanco con puertas negra y peso de 10 kg';
+
+</DEtalle_factura>
+</Factura>
+
+</Cliente>
+</Modulo_Comercial>

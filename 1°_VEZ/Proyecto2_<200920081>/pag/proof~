@@ -1,0 +1,36 @@
+<XML>
+<Inicio>
+fondo = "Azul";
+Bode = 3;
+Color_Borde="Amarillo";
+Imagen="home.jpg";
+redondear_Esquinas=1;
+</Inicio>
+<Logo>
+Bode = 2;
+Color_Borde="Azul";
+Imagen="logos.jpg";
+</Logo>
+<Barra_Inicio>
+Tamaño_Titulo="h1";
+Texto_Titulo: "Organización de lenguajes y compiladores 1, Segundo Proyecto";
+Tipo_Fuente = "Negrita";
+<Parrafo>
+"El curso de organización de lenguajes y compiladores 1 es del quinto semestre
+de la de la facultad de ingeniería de la escuela de ciencias y sistemas";
+</Parrafo>
+<Parrafo>
+"Uno de los objetivos es que los alumnos comprendan las fases del compiladores
+y puedan utilizar las primeras fases es decir, análisis léxico, sintáctico y semántico.";
+</Parrafo><Parrafo>
+"Los prerrequisitos para llevar este curso son:";
+</Parrafo>
+<Vinieta>
+<L>"Lenguajes formales y de programación";
+<L> "Introducción a la programación y computación 2";
+<L> "Mate de computo 2";
+</Vinieta>
+Imagen="USAC.jpg";
+fondo = "Gris";
+</Barra_Inicio>
+</XML>

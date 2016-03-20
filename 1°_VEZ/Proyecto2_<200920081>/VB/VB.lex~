@@ -1,0 +1,118 @@
+import java.lang.System;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.io.*;
+import java.awt.Desktop;
+%%
+
+
+
+%public
+%cup
+%line    
+%char  
+%ignorecase
+NUMBER = [1-9][0-9]*
+LETRAS = [a-zA-z]+
+dots = "."
+
+ex= "ABAP"|"CAB"|"PAG"
+
+%{
+static ArrayList line= new ArrayList();
+static ArrayList colu= new ArrayList();
+static ArrayList carac= new ArrayList();
+
+public static void mistakes4()
+{
+String Reporte= "Lexy4.html";
+FileWriter fw = null;
+try {
+fw = new FileWriter(Reporte);
+BufferedWriter bw = new BufferedWriter(fw);
+PrintWriter salArch = new PrintWriter(bw);
+salArch.println();
+
+//aqui empezas a escribir el html
+salArch.print("<html>");
+salArch.print("<head>Errores</head>");
+salArch.print("<body>");
+//definis tu tabla con cada una de las columnas
+salArch.print("<table width='200' border='1'><tr><th scope='col'>Numero</th><th scope='col'>Linea</th><th scope='col'>Columna</th><th scope='col'>Error</th></tr>");
+int n=0;
+//errores,alinea,posicion  son un arrayList del mismo tamano
+        for (int i = 0; i<line.size(); i++)
+        {
+            salArch.print("<tr><td>"+(n+1)+"</td><td>"+line.get(i)+"</td><td>"+colu.get(i)+"</td><td>"+carac.get(i)+"</td></tr>");
+n= n+1;
+
+        }
+
+salArch.println("</table><p>&nbsp;</p><p>&nbsp;</p></body></html>");
+salArch.close();
+                }
+                catch (IOException ex) {
+}
+
+
+try {
+
+            File path = new File("Lexy4.html");
+            Desktop.getDesktop().open(path);
+        } catch (IOException ex) {
+          //  Logger.getLogger(Proyecto1_Compi1View.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+}
+
+static ArrayList noTok= new ArrayList();
+static ArrayList tok = new ArrayList();
+static ArrayList ER = new ArrayList();
+
+
+
+
+
+%}
+
+
+%%
+
+
+<YYINITIAL> "import" {return new Symbol(sym.imps,yyline,yychar,new String(yytext()));noTok.add("1");}
+<YYINITIAL> "call" {return new Symbol(sym.chama,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Get_Value" {return new Symbol(sym.gv,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "write" {return new Symbol(sym.escrivir,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Crear_Cabecera" {return new Symbol(sym.cc,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Crear_Pagina" {return new Symbol(sym.cp,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "void" {return new Symbol(sym.voids,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "main" {return new Symbol(sym.princ,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "abap" {return new Symbol(sym.abap,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "cab" {return new Symbol(sym.kb,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "pag" {return new Symbol(sym.pg,yyline,yychar,new String(yytext()));}
+<YYINITIAL> {dots} {return new Symbol(sym.dot,yyline,yychar,new String(yytext()));}
+
+
+<YYINITIAL>"{" {return new Symbol(sym.ya,yyline,yychar,new String(yytext()));}
+<YYINITIAL>"}" {return new Symbol(sym.yc,yyline,yychar,new String(yytext()));}
+<YYINITIAL>"_" {return new Symbol(sym.s1,yyline,yychar,new String(yytext()));}
+<YYINITIAL>"(" {return new Symbol(sym.s2,yyline,yychar,new String(yytext()));}
+<YYINITIAL>")" {return new Symbol(sym.s3,yyline,yychar,new String(yytext()));}
+<YYINITIAL>"," {return new Symbol(sym.com,yyline,yychar,new String(yytext()));}
+
+<YYINITIAL> {LETRAS} {return new Symbol(sym.let,yyline,yychar,new String(yytext()));}
+<YYINITIAL>  {NUMBER} {return new Symbol(sym.numerito,yyline,yychar,new String(yytext()));}
+<YYINITIAL> [\n] 		{yychar=0;}
+<YYINITIAL>  [" "\t\r]+ {}
+
+
+
+
+.
+  { 
+    line.add(yyline);
+    colu.add(yychar);
+    carac.add(yytext());
+    System.out.println("error lexico en "  + (yyline+1) + "," + (yychar+1) + " No se reconoce " + yytext());
+    yychar=0;
+  }

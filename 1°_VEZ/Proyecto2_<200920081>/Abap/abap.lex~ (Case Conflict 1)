@@ -1,0 +1,95 @@
+import java.lang.System;
+import java_cup.runtime.*;
+%%
+
+%eofval{
+  { System.exit(0); }
+%eofval}
+%cup
+%line    
+%char  
+
+NUMBER = [1-9][0-9]*
+LETRAS = [a-zA-z]+
+REAL = {NUMBER}["."]{NUMBER}
+Id= [a-zA-Z][a-zA-Z0-9]*
+
+%%
+
+<YYINITIAL> "Var" {return new Symbol(sym.var,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Use" {return new Symbol(sym.use,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "as" {return new Symbol(sym.as,yyline,yychar,new String(yytext()));}
+
+<YYINITIAL> "Int" {return new Symbol(sym.ints,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Float" {return new Symbol(sym.floats,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "String" {return new Symbol(sym.strings,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Bool" {return new Symbol(sym.bools,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Char" {return new Symbol(sym.chars,yyline,yychar,new String(yytext()));}
+
+<YYINITIAL> "Pasar_Entero" {return new Symbol(sym.parsei,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Pasar_Float" {return new Symbol(sym.parsef,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Pasar_String" {return new Symbol(sym.parses,yyline,yychar,new String(yytext()));}
+
+<YYINITIAL> "If" {return new Symbol(sym.ifs,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Else" {return new Symbol(sym.elses,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "for" {return new Symbol(sym.fors,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "while" {return new Symbol(sym.whiles,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Switch" {return new Symbol(sym.switchs,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Case" {return new Symbol(sym.cases,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Default" {return new Symbol(sym.defaults,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "break" {return new Symbol(sym.breaks,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "return" {return new Symbol(sym.returns,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Void" {return new Symbol(sym.voids,yyline,yychar,new String(yytext()));}
+
+<YYINITIAL> "CALL" {return new Symbol(sym.call,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "Imprimir" {return new Symbol(sym.print,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "THIS" {return new Symbol(sym.thiss,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "VALUE" {return new Symbol(sym.values,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "MINUS" {return new Symbol(sym.min,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "MAYUS" {return new Symbol(sym.may,yyline,yychar,new String(yytext()));}
+
+
+<YYINITIAL> "+" {return new Symbol(sym.mas,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "-" {return new Symbol(sym.resta,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "*" {return new Symbol(sym.multi,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "/" {return new Symbol(sym.div,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "&" {return new Symbol(sym.add,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "(" {return new Symbol(sym.pa,yyline,yychar,new String(yytext()));}
+<YYINITIAL> ")" {return new Symbol(sym.pc,yyline,yychar,new String(yytext()));}
+
+<YYINITIAL> "=" {return new Symbol(sym.igual,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "||" {return new Symbol(sym.ou,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "&&" {return new Symbol(sym.e,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "!" {return new Symbol(sym.adm,yyline,yychar,new String(yytext()));}
+<YYINITIAL> ">" {return new Symbol(sym.men,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "<" {return new Symbol(sym.ma,yyline,yychar,new String(yytext()));}
+<YYINITIAL> ">=" {return new Symbol(sym.mayig,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "<=" {return new Symbol(sym.menig,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "==" {return new Symbol(sym.digu,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "!=" {return new Symbol(sym.dif,yyline,yychar,new String(yytext()));}
+
+
+<YYINITIAL> "[" {return new Symbol(sym.corA,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "]" {return new Symbol(sym.corC,yyline,yychar,new String(yytext()));}
+<YYINITIAL> ";" {return new Symbol(sym.semi,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "," {return new Symbol(sym.coma,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "\"" {return new Symbol(sym.comi,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "'" {return new Symbol(sym.apo,yyline,yychar,new String(yytext()));}
+<YYINITIAL> ":" {return new Symbol(sym.ddot,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "{" {return new Symbol(sym.ya,yyline,yychar,new String(yytext()));}
+<YYINITIAL> "}" {return new Symbol(sym.yc,yyline,yychar,new String(yytext()));}
+<YYINITIAL> {Id} {return new Symbol(sym.id,yyline,yychar,new String(yytext()));}
+
+
+<YYINITIAL>  {NUMBER} {return new Symbol(sym.numerito,yyline,yychar,new String(yytext()));}
+<YYINITIAL> {LETRAS} {return new Symbol(sym.let,yyline,yychar,new String(yytext()));}
+<YYINITIAL> {REAL} {return new Symbol(sym.real,yyline,yychar,new String(yytext()));}
+
+<YYINITIAL> [\n] 		{yychar=0;}
+<YYINITIAL>  (" "|\r|\t)+	{ }
+
+.
+  { 
+    System.out.println("error lexico en "  + yyline + "," + yychar + " No se reconoce " + yytext());
+    yychar=0;
+  }

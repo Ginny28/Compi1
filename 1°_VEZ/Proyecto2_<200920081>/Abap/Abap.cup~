@@ -1,0 +1,109 @@
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+import java.awt.Desktop;
+import java.io.*;
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+}
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");} 
+:}
+
+/*Terminales*/
+terminal String var,use,ints,floats,bools,strings,chars,parsei,parsef,parses;
+terminal String call,print,thiss,values,min,may,mas,resta,multi,div,add,pa,pc;
+terminal String igual,ou,e,adm,men,ma,mayig,menig,digu,dif,semi,coma,corA,corC;
+terminal String comi,apo,let,numerito,real,ddot,as,voids,returns,ifs,fors;
+terminal String switchs,elses,whiles,breaks,defaults,cases,id;
+
+nonterminal G; 
+nonterminal Bvars,Bvarsr;
+nonterminal Btva, Bparser;
+nonterminal Bapi,Bapi2,Bapi3;
+nonterminal Btodito,Btodo;
+nonterminal Basig,Baqui,Baquir,Bdemas;
+nonterminal Bfunc;
+
+
+
+start with G;
+
+G::= id igual Baquir semi ;
+//Baqui;
+//Btodito;
+Bfunc::= voids id 
+
+
+
+
+Baqui::= id igual Baquir semi;
+
+Baquir::= Baquir Bdemas
+	  |Bdemas;
+
+
+Bdemas::= comi id comi
+	  |numerito
+	  |real
+	  |id corA  Bapi2 corC
+	  |id corA Bapi2 corC corA Bapi2 corC
+	  |parsei pa Bapi pc 
+	  |parsef pa Bapi2 pc 
+	  |parses pa Bapi3 pc 
+	  |mas
+	  |resta
+	  |multi
+	  |div
+	  |add
+	  |id;
+
+
+Btodito::= Btodito Btodo
+	   |Btodo;
+
+Btodo::= var Bvars as Btva semi
+	 |Bparser
+	 |Baqui;
+
+Bvars::= Bvars Bvarsr
+	 |Bvarsr;
+
+Bvarsr::= id 
+	  |coma
+	  |id corA numerito corC
+	  |id corA numerito corC corA numerito corC
+	  ;
+	  
+Bparser::= parsei pa Bapi pc semi
+	   |parsef pa Bapi2 pc semi
+	   |parses pa Bapi3 pc semi;
+	  
+Bapi::= id
+	|real;
+
+Bapi2::= id
+	 |numerito;
+	  
+Bapi3::= id
+	 |apo id apo;
+	  
+Btva::= ints
+	|floats
+	|bools
+	|strings
+	|chars;
+

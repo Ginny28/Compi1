@@ -1,0 +1,377 @@
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+import java.awt.Desktop;
+import java.io.*;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import javax.swing.*;
+import java.io.OutputStream;
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+public static ArrayList first = new ArrayList();
+public static ArrayList second = new ArrayList();
+public static ArrayList third = new ArrayList();
+
+public void syntax_error(Symbol s){ 
+
+System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+first.add(s.left+1);
+second.add(s.right);
+third.add(s.value);
+
+
+
+}
+ public static void sinta2()
+{
+String Reporte= "Sinta2.html";
+FileWriter fw = null;
+try {
+fw = new FileWriter(Reporte);
+BufferedWriter bw = new BufferedWriter(fw);
+PrintWriter salArch = new PrintWriter(bw);
+salArch.println();
+
+//aqui empezas a escribir el html
+salArch.print("<html>");
+salArch.print("<head>Errores</head>");
+salArch.print("<body>");
+//definis tu tabla con cada una de las columnas
+salArch.print("<table width='200' border='1'><tr><th scope='col'>Numero</th><th scope='col'>Linea</th><th scope='col'>Columna</th><th scope='col'>Error</th></tr>");
+int n=0;
+//errores,alinea,posicion  son un arrayList del mismo tamano
+        for (int i = 0; i<first.size(); i++)
+        {
+            salArch.print("<tr><td>"+(n+1)+"</td><td>"+first.get(i)+"</td><td>"+second.get(i)+"</td><td>"+third.get(i)+"</td></tr>");
+n= n+1;
+
+        }
+
+salArch.println("</table><p>&nbsp;</p><p>&nbsp;</p></body></html>");
+salArch.close();
+                }
+                catch (IOException ex) {
+}
+
+
+try {
+
+            File path = new File("Sinta2.html");
+            Desktop.getDesktop().open(path);
+        } catch (IOException ex) {
+         
+        }
+
+}
+
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+:}
+
+action code
+{:
+
+public static ArrayList todo = new ArrayList();
+public static Color cb;
+public static int tf,bo,tm=0;
+public static boolean tof;
+public static String cadena="";
+public static JPanel panel1;
+public static JTextPane texto;
+public static JPanel panel2;
+public static JLabel label1;
+public static JLabel label2;
+public static JTextPane area2;
+public static Color cf;
+public static ArrayList c = new ArrayList();
+public static ArrayList co2 = new ArrayList();
+public static ArrayList paths = new ArrayList();
+public static ArrayList bos = new ArrayList();
+public static String s,cadenita,oh,ns,vs,vs2,vs3;
+
+
+public static void colorborde(String color)
+ {
+
+ if(color.equalsIgnoreCase("azul"))
+{
+cb=new java.awt.Color(0,0,233);
+}
+else if(color.equalsIgnoreCase("rojo"))
+{
+cb=new java.awt.Color(219,15,27);
+}
+else if(color.equalsIgnoreCase("verde"))
+{
+cb=new java.awt.Color(67,161,133);
+}
+else if(color.equalsIgnoreCase("morado"))
+{
+cb=new java.awt.Color(99, 45,142);
+}
+else if(color.equalsIgnoreCase("rosado"))
+{
+cb=new java.awt.Color(2030, 34, 104);
+}
+else if(color.equalsIgnoreCase("negro"))
+{
+cb=new java.awt.Color(5,5,6);
+}
+else if(color.equalsIgnoreCase("blanco"))
+{
+cb=Color.white;
+}
+else if(color.equalsIgnoreCase("gris"))
+{
+cb=Color.gray;
+}
+else if(color.equalsIgnoreCase("anaranjado"))
+{
+cb=Color.orange;
+}
+else if(color.equalsIgnoreCase("celeste"))
+{
+cb=new java.awt.Color(42,196,221);
+}
+
+ }
+
+public static void colorfondito(String color)
+ {
+ 
+ if(color.equalsIgnoreCase("azul"))
+{
+cf=Color.blue;
+}
+else if(color.equalsIgnoreCase("rojo"))
+{
+cf=Color.red;
+}
+else if(color.equalsIgnoreCase("verde"))
+{
+cf=Color.green;
+}
+else if(color.equalsIgnoreCase("morado"))
+{
+cf=new java.awt.Color(95,55,130);
+}
+else if(color.equalsIgnoreCase("rosado"))
+{
+cf=Color.pink;
+}
+else if(color.equalsIgnoreCase("negro"))
+{
+cf=Color.black;
+}
+else if(color.equalsIgnoreCase("blanco"))
+{
+cf=Color.white;
+}
+else if(color.equalsIgnoreCase("gris"))
+{
+cf=Color.gray;
+}
+else if(color.equalsIgnoreCase("anaranjado"))
+{
+cf=Color.orange;
+}
+else if(color.equalsIgnoreCase("celeste"))
+{
+cb=new java.awt.Color(42,196,221);
+}
+
+ }
+
+ void bools (int val)
+    {
+        if (val== 0)
+        {
+            tof=false;
+        }
+        else if (val==1)
+        {
+            tof =true;
+        }
+ }
+
+public static void crearInicio()
+ {
+   
+ panel1.setBackground(cf);
+ panel1.setBorder(new javax.swing.border.LineBorder(cb,Integer.parseInt(bos.get(0).toString()), tof));
+ bos.remove(0);
+ c.remove(0);
+ ImageIcon icon = new ImageIcon("/home/andychaw/Public/Proy2/src/proy2/"+paths.get(0).toString().trim());
+
+ icon = new ImageIcon(icon.getImage().getScaledInstance(80,80, BufferedImage.SCALE_SMOOTH));
+ label1.setIcon(icon);
+ 
+
+
+ }
+
+public static void logo()
+    {
+
+    if(c.isEmpty())
+    {
+    cb = Color.white;
+    }else
+    {
+    colorborde(c.get(0).toString());
+    }
+    if (co2.isEmpty())
+    {
+    cf = Color.white;
+    }else{colorfondito(co2.get(0).toString());}
+
+//System.out.println(cb);
+panel2.setBackground(cf);
+panel2.setBorder(new javax.swing.border.LineBorder(cb,Integer.parseInt(bos.get(0).toString()), tof));
+ImageIcon icon2 = new ImageIcon("/home/andychaw/Public/Proy2/src/proy2/"+paths.get(1).toString().trim());
+System.out.println("/home/andychaw/Public/Proy2/src/proy2/"+paths.get(1).toString().trim());
+ icon2 = new ImageIcon(icon2.getImage().getScaledInstance(80,80, BufferedImage.SCALE_SMOOTH));
+ label2.setIcon(icon2);
+
+
+}
+
+public static void barra()
+{
+System.out.println(s);
+texto.setContentType("text/html");
+texto.setText(oh+ ns);
+
+}
+public static void textarea()
+{
+
+}
+
+
+:}
+
+/*terminales de cabecera*/
+terminal String xmla,xmlc,ina,inc,loga,logc,bia,bic;
+/*terminales dentro cabeceras*/
+terminal String para,parc,vina,vinc,vine;
+/*terminales inicio*/
+terminal String fondo,tamf,fuente,bord,colbord,image,redo,typered,colf,typeb,path;
+/*terminales Barra_inicio*/
+terminal String tamtit,textti,typefont,typef,typetxt;
+/*terminal colores*/
+terminal String rojo,azul,verde,morado,rosa,gris,branco ,nero,laranja,celeste;
+/*terminal tiposdletras*/
+terminal String tre,arial,geor,verdana,courier;
+/*terminales de lo demas*/
+terminal String igual,dosp,numerito,comi,let,semi,dot;
+/*terminales simbolos*/
+terminal String s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,com;
+
+
+nonterminal lenguaje,Bp;
+nonterminal Biniylog,Bbi,Bparr,Bvine,Bdepois,Bvi;
+nonterminal Bcolores,Bletras;
+nonterminal Biniylogr,Bdepoisr,Bvir;
+nonterminal Bid , Bidr;
+
+
+start with lenguaje;
+lenguaje::= xmla Bp xmlc;
+Bp::= ina Biniylog inc loga Biniylog logc bia Bbi bic
+      |error{: :};
+
+Biniylog::= Biniylog Biniylogr
+	    |Biniylogr;
+	
+Biniylogr::=  fondo igual comi Bcolores:co{:colorfondito(co.toString());:}comi semi
+	      |tamf igual numerito:n{:Integer.parseInt(n);:} semi
+	      |colf igual comi Bcolores comi semi
+	      |bord igual typeb:b{:
+	      bos.add(b);
+	      bo=Integer.parseInt(b);:} semi
+	      |colbord igual comi Bcolores:col{:c.add(col);colorborde(c.get(0).toString());:} comi semi
+	      |redo igual typered:e{: bools(Integer.parseInt(e));:} semi
+	      |image igual comi path:p{:
+	      paths.add(p);
+	      System.out.println(p); :} comi semi
+	      |error{: :};
+	
+Bbi::= tamtit igual comi typetxt:tt{:s=tt;:} comi semi textti{:cadenita="";:} dosp comi Bid{:oh = "<"+s+">"+ cadenita +"</"+ s +">";:} comi semi typefont igual comi typef comi semi Bdepois
+	|error{: :};
+
+
+Bdepois::= Bdepois Bdepoisr
+	   |Bdepoisr;
+	   
+
+Bdepoisr::=   fondo igual comi Bcolores comi semi
+	      |fuente igual comi Bletras comi semi
+	      |colf igual comi Bcolores comi semi
+	      |Bparr
+	      |Bvine
+	      |error{: :};
+	      
+Bparr::= para{::} comi Bid:parr{:ns="<p align= center>"+cadenita+"</p><br>";:} comi semi parc;
+	
+
+Bvine::=vina{:vs="<UL type = circle >";:} Bvi vinc{:vs3="<UL>";:};
+        
+Bvi::= Bvi Bvir
+      |Bvir;
+
+Bvir::= vine comi Bid:seg{:vs2="<LI>"+cadenita;:} comi semi
+	|error{: :};
+
+	 
+Bcolores::= rojo:co{:RESULT = co;:}
+	    |azul:co{:RESULT = co;:}
+	    |verde:co{:RESULT = co;:}
+	    |morado:co{:RESULT = co;:}
+	    |rosa:co{:RESULT = co;:}
+	    |gris:co{:RESULT = co;:}
+	    |branco:co{:RESULT = co;:}
+	    |nero:co{:RESULT = co;:}
+	    |laranja:co{:RESULT = co;:}
+	    |celeste:co{:RESULT = co;:}
+	    |error{: :};
+	    
+Bletras::=  tre:le{:RESULT=le;:}
+	    |arial:le{:RESULT=le;:}
+	    |geor:le{:RESULT=le;:}
+	    |verdana:le{:RESULT=le;:}
+	    |courier:le{:RESULT=le;:}
+	    |error{: :};
+
+Bid::= Bid Bidr
+      |Bidr;
+      
+Bidr::= let:id{:cadenita+=id+" ";:}
+	|s1:id{:cadenita+=id+" ";:}
+	|s2:id{:cadenita+=id+" ";:}
+	|s3:id{:cadenita+=id+" ";:}
+	|s4:id{:cadenita+=id+" ";:}
+	|s5:id{:cadenita+=id+" ";:}
+	|s6:id{:cadenita+=id+" ";:}
+	|s7:id{:cadenita+=id+" ";:}
+	|s8:id{:cadenita+=id+" ";:}
+	|s9:id{:cadenita+=id+" ";:}
+	|s10:id{:cadenita+=id+" ";:}
+	|s11:id{:cadenita+=id+" ";:}
+	|com:id{:cadenita+=id+" ";:}
+	|numerito:id{:cadenita+=id+" ";:}
+	|error{: :};   
+
+

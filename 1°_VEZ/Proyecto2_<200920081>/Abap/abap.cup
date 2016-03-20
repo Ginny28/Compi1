@@ -1,0 +1,218 @@
+import java_cup.runtime.*;
+
+
+parser code
+{:    
+
+    public static void main(String args[]) throws Exception {
+	new parser(new Yylex(System.in)).parse();
+    }
+    
+    //public static ErrorSintactico es = new ErrorSintactico();
+    
+    public void syntax_error(Symbol t) {
+	//es.GuardarErrorSintactico(t.value.toString(), t.left, t.right);
+	report_error("Error Sintactico "+t.value.toString()+" linea: "+t.left+" Fila: "+t.right, t);
+    }        
+:}
+
+
+action code
+{:
+      public void ImprimirTokens(String t){
+	System.out.println(t);
+      }
+     
+:}
+
+terminal String id,numReal,numEnt,cade,var,as,tint,tfloat,tstring,tbool,tchar,tif,telse,tfor,twhile,tswitch,tcase,tbreak,tdefault,imprimir,call;
+terminal String tthis,tvalue,minus,mayus,castEnt,castFloat,castString,use,abap,PuntoComa,caracter,coma,corcheteA,corcheteC,llaveA,llaveC,dosPunto;
+terminal String igual,mas,menos,multiplicar,dividir,and,ord,admiracion,mayor,menor,punto,verdadero,falso,parenA,parenC,tvoid,treturn;
+
+non terminal Gramatica, Gprima, G, Variables, Vectores, Matriz, Funciones, Def_Var, A, Tipo_var;
+non terminal Def_Vec, B, Def_Vec_2, Def_Matriz, C, Def_Matriz_2, Operacion_Asig, Valores, D, Tipo_Op,Tam_vec;
+non terminal E, Tipo_Fun, Parametros, F, Def_Fun, H, Def_return, Ciclos, I, Def_mayus_minus;
+non terminal C_for, C_while, C_switch, Condicion, Cond_1, Def_op, Def_I,Def_Comp, Def_st, Z, Y, Def_default, Def_condiSwit;
+
+start with Gramatica;
+
+Gramatica ::= G Gprima 
+;
+
+Gprima ::= G Gprima
+	|
+	;
+
+G ::= Variables
+    | Vectores
+    | Matriz
+    | Funciones
+    | Operacion_Asig
+    ;
+	
+	Variables ::= var Def_Var as Tipo_var PuntoComa {: ImprimirTokens("Declaracion Variable"); :} 
+	;
+	    Def_Var ::= id A
+	    ;
+	    A ::= coma id A
+		|
+		;
+	    Tipo_var ::= tint
+		      | tfloat
+		      | tstring
+		      | tbool
+		      | tchar
+		      ;
+      
+      Vectores ::= var Def_Vec as Tipo_var PuntoComa {: ImprimirTokens("Declaracion Vector"); :} 
+	      ;
+	  Def_Vec ::= id corcheteA Tam_vec corcheteC B
+	  ;
+	  B ::= Def_Vec_2 B
+	      |
+	      ;
+	  Def_Vec_2 ::= coma id corcheteA Tam_vec corcheteC
+		    | coma id
+		    ;
+	     
+      Matriz ::= var Def_Matriz as Tipo_var PuntoComa {: ImprimirTokens("Declaracion Matriz"); :} 
+	      ;
+	  Def_Matriz ::= id corcheteA Tam_vec corcheteC corcheteA Tam_vec corcheteC C
+	  ;
+	  C ::= Def_Matriz_2 C
+	    |
+	    ;
+	    Def_Matriz_2 ::= coma id corcheteA Tam_vec corcheteC corcheteA Tam_vec corcheteC
+			  | coma id
+			  | coma id corcheteA Tam_vec corcheteC
+			  ;
+			
+	  Tam_vec ::= id
+		| numEnt
+		;
+			
+      Operacion_Asig ::= id igual E 
+		      | id corcheteA Tam_vec corcheteC igual E
+		      | id corcheteA Tam_vec corcheteC corcheteA Tam_vec corcheteC igual E
+		      ;
+      
+	E ::= Valores Tipo_Op Valores D PuntoComa  {: ImprimirTokens("Declaracion Operacion"); :}
+	  | Valores PuntoComa			    {: ImprimirTokens("Declaracion Asignacion"); :}
+	  ;
+	D ::= Tipo_Op Valores D
+	    | 
+	    ;
+	Valores ::= numEnt
+		| numReal
+		| id
+		| caracter
+		| id corcheteA Tam_vec corcheteC
+		| id corcheteA Tam_vec corcheteC corcheteA Tam_vec corcheteC
+		| cade
+		| castEnt parenA Tam_vec parenC
+		| castFloat parenA Tam_vec parenC
+		| castString parenA Tam_vec parenC
+		;
+	Tipo_Op ::= mas
+		| menos
+		| multiplicar
+		| dividir
+		;
+		
+      Funciones ::= Tipo_Fun id parenA Parametros parenC llaveA Def_Fun Def_return llaveC   {: ImprimirTokens("Declaracion Funcion"); :} 
+      ;
+	  Tipo_Fun ::= tint
+		  | tfloat
+		  | tstring
+		  | tbool
+		  | tchar
+		  | tvoid
+		  ;
+	  Parametros ::= F
+		      | 
+		      ;
+	  F ::= id Tipo_var H
+	    ;
+	    
+	  H ::= coma id Tipo_var H
+	      |
+	      ;
+	      
+	      
+	  Def_Fun ::= I Ciclos
+		  |
+		  ;
+		  
+	  Ciclos ::= I Ciclos
+		  |
+		  ;
+		  
+	  I ::= tif parenA Condicion parenC llaveA Ciclos llaveC 		{: ImprimirTokens("Declaracion If"); :} 
+		| twhile parenA Condicion parenC llaveA Ciclos llaveC 		{: ImprimirTokens("Declaracion while"); :} 
+		| tswitch parenA id parenC llaveA Def_st Def_default llaveC 	{: ImprimirTokens("Declaracion switch"); :} 
+		| tfor parenA id igual numEnt PuntoComa id Def_Comp numEnt PuntoComa id igual id mas numEnt parenC llaveA Ciclos llaveC {: ImprimirTokens("Declaracion for"); :} 
+		| tif parenA Condicion parenC llaveA Ciclos llaveC telse llaveA Ciclos llaveC {: ImprimirTokens("Declaracion if else"); :} 
+		| Variables
+		| Vectores
+		| Matriz
+		| Operacion_Asig
+		| call id parenA Parametros parenC PuntoComa 		{: ImprimirTokens("Declaracion Funcion Call"); :} 
+		| tthis punto id parenA Parametros parenC PuntoComa	{: ImprimirTokens("Declaracion Funcion This"); :} 
+		| tthis punto id PuntoComa				{: ImprimirTokens("Declaracion Funcion this 2"); :} 
+		| minus parenA Def_mayus_minus parenC PuntoComa	{: ImprimirTokens("Declaracion Funcion Minus"); :} 	
+		| mayus parenA Def_mayus_minus parenC PuntoComa	{: ImprimirTokens("Declaracion Funcion Mayus"); :} 
+	      ;
+	      
+	      Def_mayus_minus ::= cade
+				| caracter
+				| id
+				;
+		  	  
+	      Condicion ::= Cond_1 Def_op Cond_1
+			  | Cond_1
+			  ;
+			  
+	      Cond_1 ::= parenA Def_I Def_Comp Def_I parenC
+		      | Def_I Def_Comp Def_I
+		      | admiracion Def_I
+		      ;
+		      
+	      Def_I ::= numEnt
+		      | numReal
+		      | id
+		      ;
+		      
+	      Def_Comp ::= igual igual
+		      | admiracion igual
+		      | mayor
+		      | menor
+		      | menor igual
+		      | mayor igual
+		      ;
+		      
+	      Def_op ::= ord ord
+		      | and and
+		      ;
+		
+	  Def_st ::= Z Y
+		;
+		
+	  Y ::= Z Y
+	      |
+	      ;
+	  Z ::= tcase Def_condiSwit dosPunto Ciclos tbreak PuntoComa
+	    ;
+	  
+	  Def_condiSwit ::= numEnt
+		      | caracter
+		      ;
+	  
+	  Def_default::= tdefault dosPunto Ciclos
+		      |
+		      ;
+	  
+	  
+	  Def_return ::= treturn
+		|
+		;
+		

@@ -1,0 +1,29 @@
+<XML>
+<Importar>
+Principal.ABAP;
+</Importar>
+<Panel_1>
+Nombre_pag:"Pagina1";
+Tamaño_Titulo="h2";
+Texto_Titulo: "Program%a del laboratorio de Compiladores 6";
+fondo = "Anaranjao";
+fuente = "courier";
+<Parrafo>
+"El programa consta de 10 unidades que son";
+</Parrafo>
+<Vinieta>
+<L>"Procedador de Lenguaje";
+<L> "Analisis lexico";
+<L> "Analizados Lexico (JLex/JFlex)";
+<L>"Anelisis Sintectico";
+<L> "CUP Constructor of Useful Parser";
+<L> "Manejo de Errores";
+<L>"Grameticas Ascendentes";
+<L> "Gramaticas Descendentes";
+<L> "Tabla de Simbolos";
+<L> "Traduccion dirigida por la sintaxis";
+</Vinieta>
+</Panel_1>
+<Panel_2>
+</Panel_2>
+</XML>

@@ -1,0 +1,526 @@
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.DefaultComboBoxModel;
+import org.jfree.chart.ChartFactory; 
+import org.jfree.chart.ChartFrame; 
+import org.jfree.chart.JFreeChart; 
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.title.Title;
+import org.jfree.chart.plot.PlotOrientation; 
+import org.jfree.data.category.DefaultCategoryDataset; 
+import org.jfree.data.general.DefaultPieDataset;
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.right+1) +" Columna "+s.left+ ". Identificador " 
++s.value  ); 
+}
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido."); 
+}
+:}
+
+action code 
+{:
+public static JLabel jLabel1;
+public static JLabel jLabel2;
+public static JLabel jLabel3;
+public static JLabel jLabel4;
+public static JPanel panelito;
+public static JComboBox combito;
+public static JTable tablita;
+public static ArrayList sumita = new ArrayList();
+public static ArrayList anitos = new ArrayList();
+public static ArrayList valis = new ArrayList();
+public static double totaling= 0;
+public static double totalgastos= 0;
+public static double total= 0;
+public static String va="";
+public static String tipo="";
+public static String mone ="";
+public static String anito ="";
+
+public static void buskr(JTable tables,String value)
+{
+Object Datos[][]={};
+String nombresitos[]={"Mes","Ingresos","Gastos","Total"};
+DefaultTableModel modelo = new DefaultTableModel(Datos,nombresitos);
+
+for(int r=0; r<sumita.size();r++)
+{
+if(value.equals(sumita.get(r)))
+{
+for(int h=r+1;h<sumita.size();h++)
+{
+  if (sumita.get(h).equals("finish"))
+  {
+  
+  break;
+  }
+ // Object Fila[]={sumita.get(h),sumita.get(h+1),sumita.get(h+2),sumita.get(h+3)};
+   // modelo.addRow ( Fila );
+ else
+  {
+  if (sumita.get(h).equals("01"))
+    {
+      String mess="Enero";
+   
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+
+    }
+  else if (sumita.get(h).equals("02"))
+  {
+   String mess="Febrero";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else if (sumita.get(h).equals("03"))
+  {
+    String mess="Marzo";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else if (sumita.get(h).equals("04"))
+  {
+    String mess="Abril";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else  if (sumita.get(h).equals("05"))
+  {
+    String mess="Mayo";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+    
+  }
+  else if (sumita.get(h).equals("06"))
+  {
+   String mess="Junio";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else if (sumita.get(h).equals("07"))
+  {
+    String mess="Julio";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else if (sumita.get(h).equals("08"))
+  {
+    String mess="Agosto";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else if (sumita.get(h).equals("09"))
+  {
+    String mess="Septiembre";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else if (sumita.get(h).equals("10"))
+  {
+    String mess="Octubre";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+  }
+  else if (sumita.get(h).equals("11"))
+  {
+    String mess="Noviembre";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow ( Fila );
+    valis.clear();
+    
+  }
+  else if (sumita.get(h).equals("12"))
+  {
+    String mess="Diciembre";
+    
+    for(int w=h+1;w<sumita.size();w++)
+    {
+      if (sumita.get(w).equals("end"))
+      {
+	break;
+      }
+      else
+      {
+      valis.add(sumita.get(w));
+      }
+      
+    }
+    Object Fila[]={mess,valis.get(0),valis.get(1),valis.get(2)};
+    modelo.addRow (Fila);
+    valis.clear();
+  //  System.out.println(mess+"-"+valis.get(0)+"-"+valis.get(1)+"-"+valis.get(2));
+    
+  }
+  
+}
+tables.setModel(modelo);
+}
+
+}
+
+}
+
+}
+
+public static void Graphicss(String anio)
+{
+anito=combito.getSelectedItem().toString();
+if(tipo.equalsIgnoreCase("Circulo"))
+{
+ DefaultPieDataset dataset = new DefaultPieDataset(); 
+ for(int i = 0; i < tablita.getRowCount(); i++){
+       dataset.setValue(tablita.getValueAt(i,0).toString(), Double.parseDouble(tablita.getValueAt(i,3).toString())); }
+        JFreeChart grafica = ChartFactory.createPieChart3D(anito+"("+mone+")",dataset,true,true,false); 
+        ArrayList values = new ArrayList();
+       Title subs = new TextTitle(jLabel1.getText()+"\n"+jLabel2.getText()+"\n"+jLabel3.getText()+"\n"+jLabel4.getText());
+       values.add(subs);
+       grafica.setSubtitles(values);
+        ChartFrame frame = new ChartFrame("Grafico!", grafica);
+        frame.pack(); 
+	frame.setVisible(true);
+       
+}
+else if (tipo.equalsIgnoreCase("Barras"))
+{
+DefaultCategoryDataset dataset = new DefaultCategoryDataset(); 
+for(int i = 0; i < tablita.getRowCount(); i++){
+       dataset.setValue(Double.parseDouble(tablita.getValueAt(i,1).toString()),"Ingresos",tablita.getValueAt(i,0).toString());
+       dataset.setValue(Double.parseDouble(tablita.getValueAt(i,2).toString()),"Gastos",tablita.getValueAt(i,0).toString()); }
+       JFreeChart grafica = ChartFactory.createBarChart(anito+"("+mone+")","Mes","Totales",dataset,PlotOrientation.VERTICAL,true,true,false); 
+       ArrayList values = new ArrayList();
+       Title subs = new TextTitle(jLabel1.getText()+"\n"+jLabel2.getText()+"\n"+jLabel3.getText()+"\n"+jLabel4.getText());
+       values.add(subs);
+       ChartFrame frame = new ChartFrame("Grafico!", grafica);
+       frame.pack(); 
+       frame.setVisible(true);
+       grafica.setSubtitles(values);
+       
+}
+else if (tipo.equalsIgnoreCase("Lineas"))
+{
+DefaultCategoryDataset dataset = new DefaultCategoryDataset(); 
+for(int i = 0; i < tablita.getRowCount(); i++){
+       dataset.setValue(Double.parseDouble(tablita.getValueAt(i,1).toString()),"Ingresos",tablita.getValueAt(i,0).toString());
+       dataset.setValue(Double.parseDouble(tablita.getValueAt(i,2).toString()),"Gastos",tablita.getValueAt(i,0).toString()); }
+       JFreeChart grafica = ChartFactory.createLineChart(anito+"("+mone+")","Mes","Totales",dataset,PlotOrientation.VERTICAL,true,true,false); 
+       ArrayList values = new ArrayList();
+       Title subs = new TextTitle(jLabel1.getText()+"\n"+jLabel2.getText()+"\n"+jLabel3.getText()+"\n"+jLabel4.getText());
+       values.add(subs);
+       ChartFrame frame = new ChartFrame("Grafico!", grafica);
+       frame.pack(); 
+       frame.setVisible(true);
+       grafica.setSubtitles(values);
+         
+}
+else
+{
+DefaultCategoryDataset dataset = new DefaultCategoryDataset(); 
+for(int i = 0; i < tablita.getRowCount(); i++){
+       dataset.setValue(Double.parseDouble(tablita.getValueAt(i,1).toString()),"Ingresos",tablita.getValueAt(i,0).toString());
+       dataset.setValue(Double.parseDouble(tablita.getValueAt(i,2).toString()),"Gastos",tablita.getValueAt(i,0).toString()); 
+       }
+       JFreeChart grafica = ChartFactory.createBarChart(anito+"("+mone+")","Mes","Totales",dataset,PlotOrientation.VERTICAL,true,true,false); 
+       ArrayList values = new ArrayList();
+       Title subs = new TextTitle(jLabel1.getText()+"\n"+jLabel2.getText()+"\n"+jLabel3.getText()+"\n"+jLabel4.getText());
+       values.add(subs);
+       ChartFrame frame = new ChartFrame("Grafico!", grafica);
+       frame.pack(); 
+       frame.setVisible(true);
+       grafica.setSubtitles(values);
+       
+}
+
+
+}
+
+void toti()
+{
+total = totaling +totalgastos;
+
+}
+
+void sumitaing(double valor)
+{
+
+totaling += valor;
+}
+ 
+void sumitgast(double valor)
+{
+totalgastos += valor;
+}
+
+void ynarcombo(JComboBox combi)
+{
+DefaultComboBoxModel model = new DefaultComboBoxModel();
+for(int p=0; p<anitos.size();p++){
+  model.addElement(anitos.get(p));
+
+}
+ anitos.clear();
+ combi.setModel(model);
+ }
+ 
+:}
+
+/* Terminales  de cabeceras*/
+terminal String TeA,TeC,MoA,MoC,AnA,AnC,MeA,MeC,IngA,IngC,GstA,GstC,DuA,DuC;
+/*Terminales Usuario*/
+terminal String Nu, Plac,Da,Hora;
+/*Terminales Mod_test*/
+terminal  String Graph, Monetta;
+/*Terminales String ingresos y Gastos*/
+terminal  String Vnta,Kja,Banc,AlqC,Borr;
+terminal String Rental,LE,AP,Salary,Security,Insurance,Gas,PP,Tax;
+terminal String Otr;
+/*Terminales extras*/
+terminal  String Equal,Numb,Date,Hour,Real,MoneS,Luga,Apos,Let,Semi,Duep,Ba,Cir,Li;
+
+
+nonterminal lenguaje,Bp,BDU,BTA,BMT;
+nonterminal BU,BU2,BU3;
+nonterminal BMA,BM;
+nonterminal Bgr,Bme,Bmes;
+nonterminal Bingresos,Bgastos,Bade;
+nonterminal String Bnumbers,Bing, Bgast;
+
+start with lenguaje;
+lenguaje ::= Bp;
+
+
+Bp ::= TeA{:anitos.add("Seleccione anio");sumita.clear();:} BTA TeC{:ynarcombo(combito);:};
+
+BTA::= BDU  BMT;
+
+BDU::= DuA  BU BU2 DuC;
+BMT::= MoA BMA MoC;
+
+BU::=  Nu Equal Apos Let:Nom{: jLabel1.setText("Usuario:" +Nom);:} Apos Semi;
+BU2::= BU2 BU3
+    |BU3;
+	      
+BU3::=Plac Equal Luga:Lug{: jLabel2.setText("Lugar:" +Lug);:} Semi
+	    |Da Equal Date:Dat{: jLabel3.setText("Fecha:"+ Dat);:} Semi
+	    |Hora Equal Hour:H{: jLabel4.setText("Hora:" +H);:} Semi
+	    |error{: :};
+	    
+BMA::= BMA  BM
+      |BM;
+	    
+BM::=Graph Duep Apos Bgr:gra{:tipo=gra.toString();:} Apos Semi 
+	  |Monetta Duep Apos MoneS:m{:mone=m;:} Apos Semi
+	  |AnA:ani{:anitos.add(ani);sumita.add(ani);:} Bme AnC{:sumita.add("finish");totaling=0;totalgastos=0;total=0;:}
+	  |error{::};
+
+Bgr::= Ba:b{:RESULT = b;:}
+	    |Cir:c{:RESULT=c;:}
+	    |Li:l{:RESULT=l;:};
+	 
+Bme::= Bme Bmes
+      |Bmes;
+	  
+Bmes::= MeA:mes{:va=mes.substring(5,7);sumita.add(va);:} Bade MeC{:sumita.add(totaling);sumita.add(totalgastos);sumita.add(totaling+totalgastos);sumita.add("end");
+:}; 
+
+Bade::=IngA Bing  IngC  GstA Bgast  GstC{::};
+
+Bing::= Bing Bingresos
+	      |Bingresos;
+	      
+Bgast::= Bgast Bgastos
+	      |Bgastos;
+
+
+Bingresos::= Vnta Equal Bnumbers:numis{:sumitaing(Double.parseDouble(numis));:} Semi
+			|Kja  Equal Bnumbers:numis{:sumitaing(Double.parseDouble(numis));:}  Semi
+			|Banc Equal Bnumbers:numis{:sumitaing(Double.parseDouble(numis));:}  Semi
+			|AlqC Equal Bnumbers:numis{:sumitaing(Double.parseDouble(numis));:} Semi
+			|Borr Equal Bnumbers:numis{:sumitaing(Double.parseDouble(numis));:}  Semi
+			|Otr Equal Bnumbers:numis{:sumitaing(Double.parseDouble(numis));:}  Semi;
+			
+			
+Bgastos::= Rental Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |LE Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |AP Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |Salary Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |Security Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |Insurance Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |Gas Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |PP Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |Tax Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi
+		     |Otr Equal Bnumbers:numis{:sumitgast(Double.parseDouble(numis));:} Semi;
+	    
+	    
+	    
+Bnumbers::= Numb:v{:RESULT = v;:}
+	   |Real:m{:RESULT= m;:};
+	    
+	    
+

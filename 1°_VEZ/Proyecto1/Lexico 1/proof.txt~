@@ -1,0 +1,23 @@
+<Tesoreria>
+<Dato_Usuario>
+Nom_Usuario = 'Juan';
+Fecha = 01-08-2012;
+Hora = 09:01;
+</Dato_Usuario>
+<Mod_Tes>
+Tipo_Grafica:'Barras';
+Moneda:'$';
+<Año:2011>
+<Mes:12>
+<Ingresos>
+Ventas = 40000;
+Caja = 3000;
+Banco = 5000.40;
+</Ingresos>
+<Gastos>
+Alquiler = 500;
+</Gastos>
+</Mes>
+</Año>
+</Mod_Tes>
+</tesoreria>

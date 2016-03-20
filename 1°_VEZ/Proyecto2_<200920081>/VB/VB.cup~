@@ -1,0 +1,106 @@
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+import java.awt.Desktop;
+import java.io.*;
+
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex(System.in)).parse();
+}
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.left+1) +" Columna "+s.right+ ". Identificador " 
++s.value  ); 
+}
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido.");}
+:}
+
+/*terminales */
+terminal String imps,chama,gv,escrivir,princ,cc,cp,kb,pg,abap;
+terminal String dot,ya,yc,s1,s2,s3,com,let,numerito,voids;
+
+nonterminal gramatica;
+nonterminal Bp;
+nonterminal Bext,Bid,Bvoids;
+nonterminal Br1,Bidr,Bvoidsr;
+nonterminal Bad,Badr,Bexte;
+nonterminal Bgval,Bgad,Bpara,Bparar;
+nonterminal Bvmain,Bam,Bamr;
+
+
+start with gramatica;
+
+gramatica::= Bext Bvoids Bvmain
+	      |error{: :};
+
+
+Bext::= Bext Br1
+	|Br1;
+	
+Br1::= imps Bid dot Bexte
+      |error{: :};
+
+Bvoids::= Bvoids Bvoidsr	
+	  |Bvoidsr;
+	  
+Bvoidsr::= voids Bid s2 s3 ya Bad yc;
+	    
+
+
+Bad::=Bad Badr
+      |Badr;
+Badr::= escrivir s2 Bgval s3
+	|chama Bgad;
+	
+
+Bgval::= gv s2 Bgad s3;
+
+
+Bgad::= Bid
+	|Bid s2 Bpara s3
+	|Bid s2 s3
+	|error{: :};
+
+
+Bpara::=Bpara Bparar
+	|Bparar;
+
+Bparar::= let
+	  |numerito
+	  |com
+	  |error{: :};
+
+
+Bvmain::= voids princ s2 s3 ya cc s2 Bid dot kb s3 Bam yc
+	  |error{: :};
+
+	  
+Bam::= Bam Bamr
+       |Bamr;
+       
+Bamr::= cp s2 Bid dot pg s3
+	|Bid s2 s3;
+
+	  
+Bid::= Bid Bidr
+      |Bidr;
+      
+Bidr::= let
+	|s1
+	|numerito
+	|error{: :};
+ 
+
+Bexte::= abap
+	|kb
+	|pg
+	|error{: :};

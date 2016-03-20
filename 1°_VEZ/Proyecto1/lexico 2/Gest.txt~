@@ -1,0 +1,32 @@
+<Gestion_Materiales>
+<Formato>
+fondo = 'Azul';
+fuente = 'Arial';
+tam_fuente = 14;
+color_fuente = 'Blanco';
+<Tabla>
+Borde_Tabla = 5;
+Color_Borde = 'Anaranjado';
+</Tabla>
+</Formato>
+<Def_Productos>
+Lugar = Guatemala,Guatemala.
+Fecha = 01/08/2012.
+Hora = 09:01 am.
+<Linea Nom_linea:'Blanca'>
+<producto>
+<Caracteristicas>
+Nombre='Refrigeradora'.
+Marca='Oster'.
+Modelo=2010.
+Cantidad=200.
+Color="Gris".
+Precio=300.
+Peso=70 Lb.
+</Caracteristicas>
+</producto>
+
+</linea>
+</Def_Productos>
+</Gestion_Materiales>
+

@@ -1,0 +1,424 @@
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+import java.awt.Desktop;
+import java.io.*;
+
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex2(System.in)).parse();
+}
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.right+1) +" Columna "+s.left+ ". Identificador " 
++s.value  ); 
+}
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido."); 
+}
+:}
+
+
+
+
+action code{:
+
+ public static String lugar,linea="";
+ public static String fecha ="";
+ public static String hora= "";
+ public static String cf="";
+ public static String fuente,tamfuente="";
+ public static String bordtab,otrocolor,colorsito="";
+ public static ArrayList todito = new ArrayList();
+ public static ArrayList lines = new ArrayList();
+ public static String dm [];
+ public static double precios,cantidades,total=0;
+public static String Reporte2= "Reporte.html";
+public static FileWriter fw =null;
+public static BufferedWriter bw;
+public static PrintWriter salArch;
+
+ 
+void totalito()
+{
+  total = cantidades * precios;
+  todito.add(total);
+}
+ 
+ void colorbordes(String colorbord)
+ {
+ if(colorbord.equalsIgnoreCase("azul"))
+{
+colorsito="blue";
+}
+else if(colorbord.equalsIgnoreCase("rojo"))
+{
+colorsito="red";
+} 
+else if(colorbord.equalsIgnoreCase("verde"))
+{
+colorsito="green";
+} 
+else if(colorbord.equalsIgnoreCase("morado"))
+{
+colorsito="purple";
+} 
+else if(colorbord.equalsIgnoreCase("rosado"))
+{
+colorsito="pink";
+} 
+else if(colorbord.equalsIgnoreCase("negro"))
+{
+colorsito="black";
+} 
+else if(colorbord.equalsIgnoreCase("blanco"))
+{
+colorsito="white";
+} 
+else if(colorbord.equalsIgnoreCase("gris"))
+{
+colorsito="gray";
+} 
+else if(colorbord.equalsIgnoreCase("anaranjado"))
+{
+colorsito="orange";
+} 
+else if(colorbord.equalsIgnoreCase("celeste"))
+{
+colorsito="sky-blue";
+}
+ 
+ }
+ 
+ void colorfuente(String colorfonts)
+ {
+  if(colorfonts.equalsIgnoreCase("azul"))
+{
+otrocolor="blue";
+}
+else if(colorfonts.equalsIgnoreCase("rojo"))
+{
+otrocolor="red";
+} 
+else if(colorfonts.equalsIgnoreCase("verde"))
+{
+otrocolor="green";
+} 
+else if(colorfonts.equalsIgnoreCase("morado"))
+{
+otrocolor="purple";
+} 
+else if(colorfonts.equalsIgnoreCase("rosado"))
+{
+otrocolor="pink";
+} 
+else if(colorfonts.equalsIgnoreCase("negro"))
+{
+otrocolor="black";
+} 
+else if(colorfonts.equalsIgnoreCase("blanco"))
+{
+otrocolor="white";
+} 
+else if(colorfonts.equalsIgnoreCase("gris"))
+{
+otrocolor="gray";
+} 
+else if(colorfonts.equalsIgnoreCase("anaranjado"))
+{
+otrocolor="orange";
+} 
+else if(colorfonts.equalsIgnoreCase("celeste"))
+{
+otrocolor="sky-blue";
+}
+
+ }
+ 
+ void colorfondito(String colorfondo)
+ {
+ 
+ if(colorfondo.equalsIgnoreCase("azul"))
+{
+cf="384eba";
+}
+else if(colorfondo.equalsIgnoreCase("rojo"))
+{
+cf="ba3848";
+} 
+else if(colorfondo.equalsIgnoreCase("verde"))
+{
+cf="159f49";
+} 
+else if(colorfondo.equalsIgnoreCase("morado"))
+{
+cf="641685";
+} 
+else if(colorfondo.equalsIgnoreCase("rosado"))
+{
+cf="cf3e97";
+} 
+else if(colorfondo.equalsIgnoreCase("negro"))
+{
+cf="010301";
+} 
+else if(colorfondo.equalsIgnoreCase("blanco"))
+{
+cf="ffffff";
+} 
+else if(colorfondo.equalsIgnoreCase("gris"))
+{
+cf="8f948e";
+} 
+else if(colorfondo.equalsIgnoreCase("anaranjado"))
+{
+cf="f69e11";
+} 
+else if(colorfondo.equalsIgnoreCase("celeste"))
+{
+cf="49a7da";
+} 
+ }
+ 
+ 
+ 
+ 
+public static void tablita()throws IOException
+{
+dm = lugar.split("\\,");
+String lineas="";
+int contador =0;
+double tc=0;
+double tt=0;
+double ca =0;
+double to=0;
+ArrayList valores = new ArrayList();
+ArrayList cantidad = new ArrayList();
+ArrayList totales= new ArrayList();
+
+
+salArch.print("<html>");
+salArch.print("<head>Reporte General</head>");
+salArch.print("<body>");
+salArch.print("<body style='background:"+cf+"' TEXT='"+otrocolor+"'>");
+salArch.print("<Font face=\""+fuente+"\""+" "+"size="+tamfuente+">");
+salArch.print("<p align='center'>Departamento: "+dm[0]+"<br>Municipio: "+dm[1]+"<br>Fecha: "+fecha+"<br>Hora:"+hora+"</p>");
+
+
+for(int p=0; p<todito.size();p++)
+{
+//System.out.println(todito.get(p));
+    if(todito.get(p).equals("AquiSi"))
+    {
+    for(int o=p+1;o<todito.size();o=o+11)
+    {
+      for(int lin =0; lin<lines.size();lin++){
+       if(lines.get(lin).equals(todito.get(o)))
+       {
+          lineas= todito.get(o).toString();
+          valores.add(lineas);
+          salArch.print("<table border='"+bordtab+"' bordercolor='"+colorsito+"'align ='center'><font color='pink'>"+"\n"+
+	      "<tr>"+
+	      "<th colspan='8'><font size="+tamfuente+">"+lineas+"</font></th>"+
+	      "</tr>"+
+              "<tr>"+
+	      "<td><font size="+tamfuente+">Nombre</font></td>"+
+	      "<td><font size="+tamfuente+">Marca</font></td>"+
+	      "<td><font size="+tamfuente+">Modelo</font></td>"+
+	      "<td><font size="+tamfuente+">Candidad</font></td>"+
+	      "<td><font size="+tamfuente+">Color</font></td>"+
+	      "<td><font size="+tamfuente+">Precio</font></td>"+
+	      "<td><font size="+tamfuente+">Peso</font></td>"+
+	      "<td><font size="+tamfuente+">Total</font></td>"+
+	      "</tr>");
+	      
+           
+         for(int m=o+1;m<todito.size();m=m+8)
+         {
+            if(todito.get(m).equals("AquiSi"))
+            {
+                break;
+            }
+
+            else
+            {
+                salArch.println("<tr>"+
+	      "<td><font size="+tamfuente+">"+todito.get(m)+"</font></td>"+
+	     "<td><font size="+tamfuente+">"+todito.get(m+1)+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+todito.get(m+2)+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+todito.get(m+3)+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+todito.get(m+4)+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+todito.get(m+5)+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+todito.get(m+6)+"</font></td>"+
+	     "<td><font size="+tamfuente+">"+todito.get(m+7)+"</font></td>"+
+	      "</tr>");
+             tc += Double.parseDouble(todito.get(m+3).toString());
+             tt += Double.parseDouble(todito.get(m+7).toString());
+	     ca += Double.parseDouble(todito.get(m+3).toString());
+             to += Double.parseDouble(todito.get(m+7).toString());
+
+            }
+         }
+       } 
+
+      }
+
+    }
+salArch.println("<tr>"+
+	      "<td><font size="+tamfuente+">"+"Total"+"</font></td>"+
+	     "<td><font size="+tamfuente+">"+""+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+""+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+tc+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+""+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+""+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+""+"</font></td>"+
+	     "<td><font size="+tamfuente+">"+tt+"</font></td>"+
+	      "</tr>");
+ salArch.println("<br>");
+ cantidad.add(tc);
+             totales.add(tt);
+ tc=0;tt=0;
+    }
+   
+}
+salArch.println("</table>");
+salArch.println("<br>");
+salArch.print("<table border='"+bordtab+"' bordercolor='"+colorsito+"'align ='center'><font color='pink'>");
+
+salArch.println("<tr>"+
+	      "<td><font size="+tamfuente+">"+"Linea"+"</font></td>"+
+	     "<td><font size="+tamfuente+">Total de productos</font></td>"+
+	      "<td><font size="+tamfuente+">Total dinero</font></td>"+
+	      "</tr>");
+
+for(int p=0;p<valores.size();p++)
+{
+    salArch.println("<tr>"+
+	      "<td><font size="+tamfuente+">"+valores.get(p)+"</font></td>"+
+	     "<td><font size="+tamfuente+">"+cantidad.get(p)+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+totales.get(p)+"</font></td>"+
+	      "</tr>");
+}
+salArch.println("<tr>"+
+	      "<td><font size="+tamfuente+">Total</font></td>"+
+	     "<td><font size="+tamfuente+">"+ca+"</font></td>"+
+	      "<td><font size="+tamfuente+">"+to+"</font></td>"+
+	      "</tr>");
+salArch.println("</table>");
+
+
+ 
+salArch.println("</body></html>");
+salArch.close();
+
+
+
+
+
+}
+
+
+
+:}
+
+/*terminales de cabecera*/
+terminal String GMA,GMC,FA,FC,DpA,DpC;
+/*terminales dentro cabeceras*/
+terminal String TaA,TaC,CaA,CaC,PrA,PrC,LiA,LiC;
+/*terminales de adentro*/
+terminal String fondo, font,tmfont,colfont,btable,coltable,place,dates,hours,names,cant,colo,price,weight,mark,model;
+/*terminales de colores*/
+terminal String rossa,blu,verde,porpora,rosato,bianco,nero,griggio,arancione,celeste;
+/*terminales de lo extra*/
+terminal String equal,numb,real,dates2,hora2,place2,abrv,Apos,semi,letters,dot,nuborde;
+/* terminales tipos de letras*/
+terminal String arial,verdana,georgia,trebuchet,courier;
+
+
+nonterminal lengua,Bmain,BA;
+nonterminal BFor, BDef;
+nonterminal BAF,BFr,Bcolor,Bfuente;
+nonterminal Btabla,Bta;
+nonterminal BDp,BDr,Bpr,Bpno;
+nonterminal BCr, BCa,Bnumbers;
+
+start with lengua;
+lengua ::= Bmain;
+
+Bmain::= GMA{:fw=new FileWriter(Reporte2);bw = new BufferedWriter(fw);salArch =new PrintWriter(bw); :} BA GMC
+	 |error{: :};
+
+BA::= BFor BDef;
+
+BFor::=FA BFr FC;
+BDef::= DpA BDp DpC;
+
+BFr::= BFr BAF
+       |BAF;
+
+BDp::= BDp BDr
+      |BDr;
+
+BAF::=  fondo equal Apos Bcolor:colo{:colorfondito(colo.toString());:} Apos semi
+	|font equal Apos Bfuente:fu{:fuente=fu.toString(); :} Apos semi
+	|tmfont equal numb:n{:tamfuente=n.toString();:} semi
+	|colfont equal Apos Bcolor:clr{:colorfuente(clr.toString());:} Apos semi
+	|TaA Bta TaC
+	|error{::};
+	
+Bta ::= Bta Btabla
+	|Btabla;
+	
+Btabla ::= btable equal numb:bo{:bordtab=bo;:} semi
+	   |coltable equal Apos Bcolor:colos{:colorbordes(colos.toString());:} Apos semi
+	    |error{::};
+
+Bcolor::= rossa:co{:RESULT = co;:}
+	  |blu:co{:RESULT = co;:}
+	  |verde:co{:RESULT = co;:}
+	  |porpora:co{:RESULT = co;:}
+	  |rosato:co{:RESULT = co;:}
+	  |bianco:co{:RESULT = co;:}
+	  |nero:co{:RESULT = co;:}
+	  |griggio:co{:RESULT = co;:}
+	  |arancione:co{:RESULT = co;:}
+	  |celeste:co{:RESULT = co;:};
+
+Bfuente::= arial:le{:RESULT=le;:}
+	  |verdana:le{:RESULT=le;:}
+	  |georgia:le{:RESULT=le;:}
+	  |trebuchet:le{:RESULT=le;:}
+	  |courier:le{:RESULT=le;:};
+	  
+BDr::= place equal place2:p{:lugar=p;:} dot
+      |dates equal dates2:f{:fecha=f;:} dot
+      |hours equal hora2:h{:hora=h;:} dot
+      |LiA:li{:linea =li.substring(18,li.length()-2);todito.add("AquiSi"); todito.add(linea);lines.add(linea);:} Bpr LiC{::};
+      
+Bpr::= Bpr Bpno
+      |Bpno;
+      
+Bpno::= PrA CaA BCa CaC{:totalito();:} PrC;
+
+BCa::= BCa BCr 
+      |BCr;
+
+BCr::= names equal Apos letters:nom{:todito.add(nom);:} Apos dot
+	|mark equal Apos letters:marks{:todito.add(marks);:}  Apos dot
+	|model equal numb:mod{:todito.add(mod);:} dot
+	|cant equal numb:canti{:todito.add(canti);cantidades=Double.parseDouble(canti);:} dot
+	|colo equal Apos Bcolor:cols{:todito.add(cols);:} Apos dot
+	|price equal Bnumbers:pre{:todito.add(pre);precios=Double.parseDouble(pre.toString());:} dot
+	|weight equal Bnumbers:peso{:todito.add(peso);:} abrv dot;
+
+Bnumbers::= numb:v{:RESULT = v;:}
+	   |real:m{:RESULT= m;:};	
+	   
+	

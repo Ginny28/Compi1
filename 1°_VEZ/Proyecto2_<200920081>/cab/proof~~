@@ -1,0 +1,34 @@
+<XML>
+      <Inicio>
+	      fondo = "Azul";
+	      Bode = 3;
+	      Color_Borde="Anaranjado";
+	      Imagen="home.jpg";
+	      redondear_Esquinas= 1;
+      </Inicio>
+      <Logo>
+	      Bode = 2;
+	      Color_Borde="Azul";
+	      Imagen="logos.jpg";
+      </Logo>
+      <Barra_Inicio>
+	      Tamaño_Titulo="h1";
+	      Texto_Titulo:"Organizacion ";
+	      Tipo_Fuente = "Negrita";
+	      <Parrafo>
+			"El";
+	      </Parrafo>
+	      <Parrafo>
+			 "semantico.";
+	      </Parrafo>
+	      <Parrafo>
+			 "Los";
+	      </Parrafo>
+	      <Vinieta>
+			  <L>"Lenguajes";
+			  <L> "Introduccion ";
+			  <L> "Mate";
+	      </Vinieta>
+	      
+	      </Barra_Inicio>
+</XML>

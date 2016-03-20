@@ -1,0 +1,205 @@
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import javax.swing.*;
+import java.awt.Desktop;
+import java.io.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.*;
+
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+new parser(new Yylex3(System.in)).parse();
+}
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.right+1) +" Columna "+s.left+ ". Identificador " 
++s.value  ); 
+}
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido."); 
+}
+:}
+
+action code
+{:
+public static ArrayList first = new ArrayList();
+public static ArrayList alls = new ArrayList();
+public static String fact , fecha2 ="";
+public static String concat="";
+public static String concat2="";
+public static double suma=0;
+public static double total=0;
+
+
+
+public static void pdfsito() throws FileNotFoundException, DocumentException
+{
+Document documento = new Document();
+
+FileOutputStream ficheroPdf = new FileOutputStream("fichero.pdf");
+PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
+documento.open();
+Paragraph p1 = new Paragraph();
+p1.setAlignment(Element.ALIGN_RIGHT);
+
+Chunk ch = new Chunk("Fecha:"+first.get(0)+", Hora:"+first.get(1));
+
+p1.add(ch);
+Paragraph p2 = new Paragraph();
+
+Chunk ch2 = new Chunk("Cliente: "+first.get(2)+"\n"+
+                       "Nit: "+first.get(3)+"\n"+
+                     "Direccion: "+first.get(4)+"\n"+
+                     "Telefono: "+first.get(5)+"\n"+
+                     "Edad: "+first.get(6)+"\n");
+p2.add(ch2);
+
+Paragraph p3 = new Paragraph();
+p3.setAlignment(Element.ALIGN_CENTER);
+
+Chunk ch3 = new Chunk("COMPRAS REALIZADAS");
+
+p3.add(ch3);
+
+Paragraph p4 = new Paragraph();
+
+Chunk ch4 = new Chunk("Fact No."++);
+
+p3.add(ch3);
+
+documento.add(p1);
+documento.add(p2);
+documento.add(p3);
+
+PdfPTable tab = new PdfPTable(5);
+
+tab.addCell(new Paragraph("Cantidad"));
+tab.addCell(new Paragraph("Producto"));
+tab.addCell(new Paragraph("Precio"));
+tab.addCell(new Paragraph("Descripcion"));
+tab.addCell(new Paragraph("Subtotal"));
+try{
+for(int j=0;j<alls.size();j++)
+{
+    System.out.println(alls.get(j).toString());
+    if(alls.get(j).equals("ends")){
+    for(int g=j+1;j<alls.size();g=g+4)
+        {
+            if(alls.get(g) != "ends"){
+                tab.addCell(new Paragraph(alls.get(g).toString()));
+                tab.addCell(new Paragraph(alls.get(g+1).toString()));
+                tab.addCell(new Paragraph(alls.get(g+2).toString()));
+                tab.addCell(new Paragraph(alls.get(g+3).toString()));
+                tab.addCell(new Paragraph(alls.get(g+2).toString()));
+            }else{
+                break;
+            }
+
+
+       }
+    }
+
+  }}
+catch (Exception ex){ex.printStackTrace();}
+
+
+documento.add(tab);
+documento.close();
+
+ 
+
+}
+
+public static void totalito()
+{
+total +=suma;
+}
+:}
+
+
+
+/*Terminales de cabecera */
+terminal String ModA,ModC,CliA,CliC,FaA,FaC,DeA,DeC;
+/*terminales de principales*/
+terminal String date, fech2,hour,hour2;
+/*terminales de clientes*/
+terminal String names,lstna,nity,dir,tel,age,nity2,tel2;
+/*terminales factura*/
+terminal String numy,fve,fech3;
+/*terminales Detalle*/
+terminal String can, pro, pre,desc;
+/*terminales extras*/
+terminal String equal,ddot,Apos,lett,real,numb,semi,gui,dot,com;
+
+
+nonterminal lengua,Bprin;
+nonterminal BAP,Bcl,Bfa,Bdf,Bnu;
+nonterminal Br1,Br2,Br3,Br4,Br5,Br6;
+nonterminal Bnap,Btodo;
+
+start with lengua;
+lengua ::= Bprin;
+
+Bprin::= ModA Br1 ModC
+	|error{::};
+Br1::= Br1 BAP
+      |BAP;
+
+BAP::= date equal fech2:fe{:first.add(fe);:} semi
+      |hour equal hour2:h{:first.add(h);:} semi
+      |CliA Br2 CliC;
+      
+Br2::= Br2 Bcl
+      |Bcl;
+
+Bcl::= names{:concat2="";:} ddot Apos Br5 Apos semi
+      |lstna ddot Apos Br5 {:first.add(concat2);:} Apos semi
+      |nity ddot Apos nity2:n{:first.add(n);:} Apos semi
+      |dir{:concat="";:} ddot Apos Br6{:first.add(concat);:} Apos semi
+      |tel ddot tel2:te{:first.add(te);:} semi
+      |age ddot numb:ag{:first.add(ag);:} semi
+      |FaA {:alls.add("ends");:}Br3 FaC{:facts.add("end");:};
+      
+      
+Br5::= Br5 Bnap
+     |Bnap;
+   
+Bnap::= lett:l{:concat2+=l+" ";:};
+
+Br6::= Br6 Btodo
+      |Btodo;
+      
+Btodo::=lett:e{:concat+=e+" ";:}
+	|numb:e{:concat+=e+" ";:}
+	|gui:e{:concat+=e+" ";:}
+	|dot:e{:concat+=e+" ";:}
+	|com:e{:concat+=e+" ";:}
+	|error;
+
+Br3::= Br3 Bfa
+      |Bfa;
+      
+Bfa::= numy equal numb:n{:fact = n;:} semi
+      |fve equal fech3:fe{:fecha2 = fe;:} semi
+      |DeA Br4 DeC;
+      
+Br4::= Br4 Bdf
+      |Bdf;
+      
+Bdf::= can ddot numb:n{:alls.add(n);:} semi
+      |pro{:concat2 ="";:}  ddot Apos Br5{:alls.add(concat2);:}  Apos semi
+      |pre ddot Bnu:a{:alls.add(a);suma+=Double.parseDouble(a.toString());:}  semi
+      |desc{:concat ="";:} ddot Apos Br6{:alls.add(concat);:} Apos semi;
+      
+Bnu::= numb:n{:RESULT=n;:}
+      |real:n{:RESULT=n;:};
+      

@@ -1,0 +1,219 @@
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+%%   
+
+
+%cup
+%line
+%char
+%ignorecase
+%state COMENTARIO
+%state coment2
+%state caden
+NUMBER = ["-"]?[0-9][0-9]*
+letras = [a-zA-z]+
+
+abi = "<"
+cer= ">"
+real = ["-"]?{NUMBER}{pto}{NUMBER}
+bgn = {abi}{wd1}{cer}
+nd = {abi}{wd2}{cer}
+pto= "."
+wd1="begin"
+wd2 ="end"
+ID = [a-zA-Z]([A-Za-z0-9]|["_"])*
+
+%{
+ArrayList val= new ArrayList();
+ArrayList list1= new ArrayList();
+ArrayList list2 = new ArrayList();
+ArrayList list3 = new ArrayList();
+ArrayList all = new ArrayList();
+%}
+
+%{
+public void  valuestrue(){
+    for (int mem= 0 ; mem<val.size(); mem++){
+        System.out.println(val.get( mem));
+        all.add(val.get(mem));
+    }
+}
+
+public void mistakes()
+{
+String Reporte= "Errores_Archivo.html";
+FileWriter fw = null;
+try {
+fw = new FileWriter(Reporte);
+BufferedWriter bw = new BufferedWriter(fw);
+PrintWriter salArch = new PrintWriter(bw);
+salArch.println();
+
+//aqui empezas a escribir el html
+salArch.print("<html>");
+salArch.print("<head>Errores</head>");
+salArch.print("<body>");
+//definis tu tabla con cada una de las columnas
+salArch.print("<table width='200' border='1'><tr><th scope='col'>Error</th><th scope='col'>Linea</th><th scope='col'>Poscion</th></tr>");
+
+//errores,alinea,posicion  son un arrayList del mismo tamano
+        for (int i = 0; i<list1.size(); i++){
+            salArch.print("<tr><td>"+list3.get(i)+"</td><td>"+list1.get(i)+"</td><td>"+list2.get(i)+"</td></tr>");
+
+
+     }
+salArch.println("</table><p>&nbsp;</p><p>&nbsp;</p></body></html>");
+salArch.close();
+                }
+                catch (IOException ex) {
+}
+
+}
+
+
+
+%}
+
+
+
+%{
+
+public  static int cvar,cint,cstr,cflt,cchr,cbol,ctrue,cfal,cif,cthen,cels,celsif,ceif,cfr,cnxt,cwhil,cewhil,cprint,cnum,cnd,cbgn,creal,cid,cmas,cmens,cpor,cdiv,cpa,cpc,cigual,cpcoma,cabi,ccerr,ccad,ccom1,ccom2,cto,co,cosi,cy;
+public  String  ca,co1,co2;
+
+%}
+
+%init{
+celsif=0;
+cvar=0;
+cint=0;
+cstr= 0;
+cbol= 0;
+ctrue= 0;
+cfal= 0;
+cif= 0;
+cthen= 0;
+cels= 0;
+ceif= 0;
+cfr= 0;
+cnxt= 0;
+cwhil= 0;
+cewhil= 0;
+cprint= 0;
+cnum= 0;
+cnd= 0;
+cbgn= 0;
+creal= 0;
+cid= 0;
+cmas= 0;
+cmens= 0;
+cpor= 0;
+cdiv= 0;
+cpa= 0;
+cpc= 0;
+cigual= 0;
+cpcoma= 0;
+cabi= 0;
+ccerr= 0;
+ccad= 0;
+ccom1= 0;
+ccom2=0;
+cflt=0;
+cchr=0;
+cto=0;
+cosi=0;
+cy=0;
+ca="";
+co1="";
+co2="";
+
+%init}
+
+
+
+%%
+
+<YYINITIAL> "var" { cvar++; return new Symbol(sym.var,val.add(yytext()));}
+<YYINITIAL> "integer" { cint++; return new Symbol(sym.ints,val.add(yytext()));}
+<YYINITIAL> "string" {cstr++; return new Symbol(sym.str,val.add(yytext()));}
+<YYINITIAL> "boolean" {cbol++; return new Symbol(sym.bol,val.add(yytext()));}
+<YYINITIAL> "true" {  ctrue++;return new Symbol(sym.Ver,val.add(yytext()));}
+<YYINITIAL> "false" {  cfal++;return new Symbol(sym.Fals,val.add(yytext()));}
+<YYINITIAL> "if" {  cif++;return new Symbol(sym.ifs,val.add(yytext()));}
+<YYINITIAL> "then" {cthen++;  return new Symbol(sym.then,val.add(yytext()));}
+<YYINITIAL> "else" {cels++;return new Symbol(sym.elc,val.add(yytext()));}
+<YYINITIAL> "endif" {ceif++;return new Symbol(sym.ndIf,val.add(yytext()));}
+<YYINITIAL> "for" { cfr++; return new Symbol(sym.fors,val.add(yytext()));}
+<YYINITIAL> "next" {  cnxt++;return new Symbol(sym.nxt,val.add(yytext()));}
+<YYINITIAL> "while" { cwhil++; return new Symbol(sym.whil,val.add(yytext()));}
+<YYINITIAL> "endwhile" {cewhil++;  return new Symbol(sym.Enwhile,val.add(yytext()));}
+<YYINITIAL> "to" {cto++;  return new Symbol(sym.to,val.add(yytext()));}
+<YYINITIAL> "print" {  cprint++;return new Symbol(sym.prnt,val.add(yytext()));}
+<YYINITIAL> "elseif" {  celsif++;return new Symbol(sym.eif,val.add(yytext()));}
+<YYINITIAL> "float" {  cflt++;return new Symbol(sym.flt,val.add(yytext()));}
+<YYINITIAL> "char" {  cchr++;return new Symbol(sym.chr,val.add(yytext()));}
+<YYINITIAL> {NUMBER} 	{  cnum++;return new Symbol(sym.numero,val.add(yytext()));}
+<YYINITIAL> {nd} 	{  cnd++;return new Symbol(sym.end,val.add(yytext()));}
+<YYINITIAL> {bgn} 	{cbgn++; return new Symbol(sym.bgn,val.add(yytext()));}
+<YYINITIAL> {real} 	{  creal++;return new Symbol(sym.real,val.add(yytext()));}
+<YYINITIAL> {ID}    {cid++;  return new Symbol(sym.id,val.add(yytext()));}
+
+
+//symbols
+<YYINITIAL> "+" { cmas++;return new Symbol(sym.mas,val.add(yytext())); }
+<YYINITIAL> "-" { cmens++;return new Symbol(sym.menos,val.add(yytext())); }
+<YYINITIAL> "*" { cpor++;return new Symbol(sym.por,val.add(yytext()));}
+<YYINITIAL> "/" { cdiv++;return new Symbol(sym.div,val.add(yytext())); }
+<YYINITIAL> "(" {cpa++;return new Symbol(sym.paA,val.add(yytext())); }
+<YYINITIAL> ")" { cpc++;return new Symbol(sym.paC,val.add(yytext())); }
+<YYINITIAL> "=" { cigual++;return new Symbol(sym.igual,val.add(yytext())); }
+<YYINITIAL> "<" 	{cabi++;return new Symbol(sym.ABI,val.add(yytext()));}
+<YYINITIAL> ">" 	{ccerr++;return new Symbol(sym.CER,val.add(yytext()));}
+<YYINITIAL> "||" 	{cosi++;return new Symbol(sym.osi,val.add(yytext()));}
+<YYINITIAL> "&&" 	{cy++;return new Symbol(sym.ys,val.add(yytext()));}
+
+
+<YYINITIAL> "/*" {yybegin(coment2); ccom2++; co2="";co2+=yytext(); }
+<coment2> [\n\t\r]+  {co2+=yytext();}
+<coment2> [^"*"]	{co2+=yytext();}
+<coment2> "*/"  {yybegin(YYINITIAL); yychar=0; co2+=yytext();return new Symbol(sym.comentario2,val.add(co2));}
+
+
+
+
+
+
+
+<YYINITIAL> "\"" {yybegin(caden); ccad++; ca=""; ca+=yytext();}
+<caden> {letras} { ca+=yytext();}
+<caden> [" "\t\r] {  ca+=yytext();}
+<caden> "\"" {yybegin(YYINITIAL); yychar=0; ca+=yytext();val.add(ca);return new Symbol(sym.cads,new String(ca));}
+
+
+<YYINITIAL> "//" {yybegin(COMENTARIO); ccom1++;co1="";co1+=yytext();}
+<COMENTARIO> [^\n] {co1+=yytext();}
+<COMENTARIO> [\n] {yybegin(YYINITIAL); yychar=0;co1+=yytext(); return new Symbol(sym.comentario1, val.add(co1));}
+
+
+<YYINITIAL> {letras} {return new Symbol(sym.letra,val.add(yytext()));}
+<YYINITIAL> [\n] 		{yychar=0;val.add(yytext());}
+<YYINITIAL>  [" "\t\r]+ {val.add(yytext());}
+  .
+  { 
+  
+   list1.add(yyline);
+    list2.add(yychar);
+    list3.add(yytext());
+    val.add(yytext());
+    System.out.println("error lexico en "  + yyline + "," + yychar + " No se reconoce " + yytext());
+    yychar=0;
+  }
+
+ 
+  
+  

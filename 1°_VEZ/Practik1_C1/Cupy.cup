@@ -1,0 +1,95 @@
+import java_cup.runtime.*;
+import java.lang.String;
+import java.util.ArrayList;
+parser code {:
+
+public static void main(String args[]) throws Exception {
+
+// La clase Yylex es creada por el analizador léxico
+
+
+new parser(new Yylex(System.in)).parse();
+}
+
+public void syntax_error(Symbol s){ 
+        System.out.println("Error en la Línea " + (s.right+1) +" Columna "+s.left+ ". Identificador " 
++s.value  ); 
+}
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + 
+s.value + " no reconocido."); 
+}
+:}
+
+action code
+{:
+    int count=0;
+    String vari="";
+  public static ArrayList prnts =  new ArrayList();
+:}
+
+/*Terminales*/
+terminal var, ints, str, Ver, Fals, ifs, then, elc, ndIf, fors, letra, nxt, whil,eif;
+terminal Enwhile, numero, bgn, end, real, ABI,CER,mas,id,prnt,to,osi,ys,flt,chr;
+terminal menos ,por, div, paA,paC,igual,comentario1,comentario2,bol;
+terminal String  cads;
+
+/*Non terminal*/
+
+nonterminal lenguaje,Bp,Bm,Bo;
+
+
+start with lenguaje;
+
+lenguaje::= Bm;
+
+Bm::= Bm Bo 
+	    |Bo
+	    |error{: :};
+	      
+Bo::= bgn
+	  |var
+	  |ints
+	  |str
+	  |Ver
+	  |Fals
+	  |ifs
+	  |then
+	  |elc
+	  |ndIf
+	  |fors
+	  |nxt
+	  |whil
+	  |Enwhile
+	  |numero
+	  |real
+	  |ABI
+	  |CER
+	  |mas
+	  |menos
+	  |por
+	  |div
+	  |paA
+	  |paC
+	  |igual
+	  |comentario1
+	  |comentario2
+	  |id
+	  |bol
+	  |letra
+	  |to
+	  |osi
+	  |ys
+	  |cads
+	  |flt
+	  |chr
+	  |eif
+	  |end
+	  |Bp
+	  ;
+	  
+	  
+Bp::= prnt:f{:System.out.println(f);:} cads:m{: System.out.println("hoo"+m); prnts.add(m);:}
+	 ;
+	 

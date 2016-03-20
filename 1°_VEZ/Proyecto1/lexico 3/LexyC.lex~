@@ -1,0 +1,99 @@
+import java.lang.System;
+
+class Analex {
+      public static void main(String argv[])
+	throws java.io.IOException {
+	Yylex yy = new Yylex(System.in);
+	while (yy.yylex() != null) {}	
+    }
+}
+
+class Yytoken {
+  Yytoken () {}
+}
+ 
+%%
+
+%eofval{
+  { System.exit(0); }
+%eofval}
+
+%line    
+%char  
+%ignorecase
+NUMBER = [1-9][0-9]*
+REAL = {NUMBER}"."{NUMBER}
+LETRAS = [a-zA-z]+
+N= [0-9]
+NIT ={N}{N}{N}{N}{N}{N}"-"{N}{N}
+TEL = {N}{N}{N}{N}{N}{N}{N}{N}
+EDAD =[18-100]
+mes =01|02|03|04|05|06|07|08|09|10|11|12
+an = [0-9][0-9][0-9][0-9]
+dia = 01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31
+h = 01|02|03|04|05|06|07|08|09|10|11|12
+min = 00|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+
+McA = "<""Modulo_Comercial"">"
+McC = "<""/""Modulo_Comercial"">"
+ClienA= "<""cliente"">"
+ClienC="<""/""cliente"">"
+FacA="<""Factura"">"
+FacC= "<""/""Factura"">"
+DfA="<""Detalle_Factura"">"
+DfC= "<""/""Detalle_Factura"">"
+
+FECHA2 = {dia}"/"{mes}"/"{an}
+FECHA3 = {dia}"-"{mes}"-"{an}
+HORA2 = {h}":"{min}" ""am"|"pm"
+LUGR = {LETRAS}","{LETRAS}
+pr = {NUMBER}"calle"|"Avenida"
+DI ={pr}" "{NUMBER}"-"{NUMBER}" ""zona"" "{NUMBER}","{LETRAS}","{LETRAS}
+Dtodo =( {LETRAS}|[,]|[.]|[-]|{NUMBER})+
+%%
+<YYINITIAL> {McA} {System.out.println(yytext());}
+<YYINITIAL> {McC} {System.out.println(yytext());}
+<YYINITIAL> "Fecha" {System.out.println(yytext());}
+<YYINITIAL> "Hora" {System.out.println(yytext());}
+<YYINITIAL> {ClienA} {System.out.println(yytext());}
+<YYINITIAL> {ClienC} {System.out.println(yytext());}
+<YYINITIAL> "Nombre" {System.out.println(yytext());}
+<YYINITIAL> "Apellido" {System.out.println(yytext());}
+<YYINITIAL> "Nit" {System.out.println(yytext());}
+<YYINITIAL> "Direccion" {System.out.println(yytext());}
+<YYINITIAL> "Telefono" {System.out.println(yytext());}
+<YYINITIAL> "Edad" {System.out.println(yytext());}
+<YYINITIAL> {NIT} {System.out.println(yytext());}
+<YYINITIAL> {TEL} {System.out.println(yytext());}
+<YYINITIAL> {EDAD} {System.out.println(yytext());}
+<YYINITIAL> {DI} {System.out.println(yytext());}
+<YYINITIAL> {FacA} {System.out.println(yytext());}
+<YYINITIAL> {FacC} {System.out.println(yytext());}
+<YYINITIAL> "No" {System.out.println(yytext());}
+<YYINITIAL> "Fecha_Venta" {System.out.println(yytext());}
+<YYINITIAL> {DfA} {System.out.println(yytext());}
+<YYINITIAL> {DfC} {System.out.println(yytext());}
+<YYINITIAL> "Cantidad" {System.out.println(yytext());}
+<YYINITIAL> "Producto" {System.out.println(yytext());}
+<YYINITIAL> "Precio" {System.out.println(yytext());}
+<YYINITIAL> "Descripcion" {System.out.println(yytext());}
+
+<YYINITIAL> "=" {System.out.println(yytext());}
+<YYINITIAL> ":" {System.out.println(yytext());}
+<YYINITIAL>  {NUMBER} {System.out.println(yytext());}
+<YYINITIAL> {REAL} {System.out.println(yytext());}
+<YYINITIAL> {FECHA2} {System.out.println(yytext());}
+<YYINITIAL> {FECHA3} {System.out.println(yytext());}
+<YYINITIAL> {HORA2} {System.out.println(yytext());}
+<YYINITIAL> {LUGR} {System.out.println(yytext());}
+<YYINITIAL> "\"" {System.out.println(yytext());}
+<YYINITIAL> {LETRAS} {System.out.println(yytext());}
+<YYINITIAL>";" {System.out.println(yytext());}
+<YYINITIAL> [\n] 		{yychar=0;}
+<YYINITIAL>  [" "\t\r]+ {}
+
+.
+  { 
+    System.out.println("error lexico en "  + yyline + "," + yychar + " No se reconoce " + yytext());
+    yychar=0;
+  }

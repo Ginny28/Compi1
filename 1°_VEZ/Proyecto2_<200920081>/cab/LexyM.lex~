@@ -1,0 +1,111 @@
+import java.lang.System;
+
+class Analex {
+      public static void main(String argv[])
+	throws java.io.IOException {
+	Yylex yy = new Yylex(System.in);
+	while (yy.yylex() != null) {}	
+    }
+}
+
+class Yytoken {
+  Yytoken () {}
+}
+ 
+%%
+
+%eofval{
+  { System.exit(0); }
+%eofval}
+
+%line    
+%char  
+%ignorecase
+NUMBER = [1-9][0-9]*
+LETRAS = [a-zA-z]+
+
+InA= "<""XML"">"
+InC= "<""/""XML"">"
+
+FA= "<""Formato"">"
+FC= "<""/""Formato"">"
+TaA = "<""Tabla"">"
+TaC = "<""/""Tabla"">"
+CaA = "<""Caracteristicas"">"
+CaC = "<""/""Caracteristicas"">"
+PrA= "<""Producto"">"
+PrC= "<""/""Producto"">"
+LiA= "<""Linea"" ""Nom_Linea"":"" " "\""{LETRAS}"\"" ">"
+LiC= "<""/""Linea"">"
+DpA ="<""Def_Productos"">"
+DpC ="<""/""Def_Productos"">"
+FECHA2 = {dia}"/"{mes}"/"{an}
+HORA2 = {h}":"{min}" ""am"|"pm"
+LUGR = {LETRAS}","{LETRAS}
+Abrevs = "Gr"|"Lb"|"Kg"|"Oz"|"Tn"
+%%
+
+<YYINITIAL> {GMA} {System.out.println(yytext());}
+<YYINITIAL> {GMC} {System.out.println(yytext());}
+<YYINITIAL> {FA} {System.out.println(yytext());}
+<YYINITIAL> {FC} {System.out.println(yytext());}
+<YYINITIAL> {TaA} {System.out.println(yytext());}
+<YYINITIAL> {TaC} {System.out.println(yytext());}
+<YYINITIAL> {CaA} {System.out.println(yytext());}
+<YYINITIAL> {CaC} {System.out.println(yytext());}
+<YYINITIAL> {PrA} {System.out.println(yytext());}
+<YYINITIAL> {PrC} {System.out.println(yytext());}
+<YYINITIAL> {LiA} {System.out.println(yytext());}
+<YYINITIAL> {LiC} {System.out.println(yytext());}
+<YYINITIAL> {DpA} {System.out.println(yytext());}
+<YYINITIAL> {DpC} {System.out.println(yytext());}
+<YYINITIAL> "fondo" {System.out.println(yytext());}
+<YYINITIAL> "fuente" {System.out.println(yytext());}
+<YYINITIAL> "tam_fuente" {System.out.println(yytext());}
+<YYINITIAL> "color_fuente" {System.out.println(yytext());}
+<YYINITIAL> "Borde_tabla" {System.out.println(yytext());}
+<YYINITIAL> "color_borde" {System.out.println(yytext());}
+<YYINITIAL> "lugar" {System.out.println(yytext());}
+<YYINITIAL> "fecha" {System.out.println(yytext());}
+<YYINITIAL> "hora" {System.out.println(yytext());}
+<YYINITIAL> "Nombre" {System.out.println(yytext());}
+<YYINITIAL> "Cantidad" {System.out.println(yytext());}
+<YYINITIAL> "Color" {System.out.println(yytext());}
+<YYINITIAL> "Precio" {System.out.println(yytext());}
+<YYINITIAL> "Peso" {System.out.println(yytext());}
+<YYINITIAL> "Marca" {System.out.println(yytext());}
+<YYINITIAL> "Modelo" {System.out.println(yytext());}
+
+<YYINITIAL> "Rojo" {System.out.println("Rojitoo");}
+<YYINITIAL> "Azul" {System.out.println(yytext());}
+<YYINITIAL> "Verde" {System.out.println(yytext());}
+<YYINITIAL> "Morado" {System.out.println(yytext());}
+<YYINITIAL> "Rosado" {System.out.println(yytext());}
+<YYINITIAL> "Blanco" {System.out.println(yytext());}
+<YYINITIAL> "Negro" {System.out.println(yytext());}
+<YYINITIAL> "Gris" {System.out.println(yytext());}
+<YYINITIAL> "Anaranjado" {System.out.println(yytext());}
+<YYINITIAL> "Celeste" {System.out.println(yytext());}
+
+
+<YYINITIAL> "=" {System.out.println(yytext());}
+<YYINITIAL>  {NUMBER} {System.out.println(yytext());}
+<YYINITIAL> {REAL} {System.out.println(yytext());}
+<YYINITIAL> {FECHA2} {System.out.println(yytext());}
+<YYINITIAL> {HORA2} {System.out.println(yytext());}
+<YYINITIAL> {LUGR} {System.out.println(yytext());}
+<YYINITIAL> {Abrevs} {System.out.println(yytext());}
+<YYINITIAL> "'" {System.out.println(yytext());}
+<YYINITIAL> "\"" {System.out.println(yytext());}
+<YYINITIAL> {LETRAS} {System.out.println(yytext());}
+<YYINITIAL>";" {System.out.println(yytext());}
+<YYINITIAL> "." {System.out.println(yytext());}
+<YYINITIAL> [\n] 		{yychar=0;}
+<YYINITIAL>  [" "\t\r]+ {}
+
+
+.
+  { 
+    System.out.println("error lexico en "  + yyline + "," + yychar + " No se reconoce " + yytext());
+    yychar=0;
+  }

@@ -1,0 +1,87 @@
+<Gestion_Materiales>
+<Formato>
+fondo = 'Azul';
+fuente = 'Calibri';
+tam_fuente = 14;
+color_fuete = 'Blanco';
+<Tabla>
+Borde_Table = 5;
+Color_Borde = 'Anaranjado';
+</Tabla>
+</Formato>
+<Def_Productos>
+Lugar = Guatemala,Guatemala.
+Fecha = 01/08/2012.
+Hora = 09:01 am.
+<Linea Nom_linea:"Blanca">
+<Producto>
+<Caracteristicas>
+Nombre="Refrigeradora".
+Marca="Oster".
+Modelo=2012.
+Cantidad=100.
+Color="Blanco".
+Precio=2000.50.
+Peso=300 Kg.
+</Caracteristicas>
+</Producto>
+<Producto>
+<Caracteristicas>
+Nombre="Estufa".
+Marca="Mabe".
+Color="Gris".
+Modelo=2010.
+Cantidad=200.
+Precio=300.
+Peso=70 Lb.
+</Caracteristicas>
+</Producto>
+<Producto>
+<Caracteristicas>
+Nombre="Micro ondas".
+Marca="Micro".
+Modelo=2000.
+Cantidad=30.
+Color="Plateado con la puerta negra".
+Precio=425.
+Peso=10 Kg.
+</Caracteristicas>
+</Producto>
+</Linea>
+<Linea Nom_linea: "Tecnologia">
+<Producto>
+<Caracteristicas>
+Nombre="Laptop".
+Marca="HP".
+Modelo=2010.
+Cantidad=30.
+Color="Negro".
+Precio=12000.
+Peso=10 Lb.
+</Caracteristicas>
+</Producto>
+<Producto>
+<Caracteristicas>
+Nombre="mouse".
+Marca="hp".
+Color="Gris con partes negras".
+Modelo=2011.
+Cantidad=10.
+Precio=90.
+Peso=100 Gr.
+</Caracteristicas>
+</Producto>
+<Producto>
+<Caracteristicas>
+Nombre="Memoria USB".
+Marca="Kingstong".
+Modelo=2010.
+Cantidad=30.
+Color="Blanca".
+Precio=125.
+Peso=1 Gr.
+</Caracteristicas>
+</Producto>
+</Linea>
+</Def_Productos>
+</Gestion_Materiales>
